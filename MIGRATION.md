@@ -136,7 +136,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 2.7 | `Refactor: generate the seven ore sets as definitions` | 7 | | 6 | 2 | 15 | M | [x] |
 | 2.8 | `Refactor: express variants and recipes as core definitions` | 8 | | 1 | 20 | 29 | L | [x] |
 | 2.9 | `Refactor: parse seeds and compare world seeds in the core` | 3 | | 1 | | 4 | S | [x] |
-| 3.1 | `Feat: generate the ore catalog from the configured seed` | 4 | 1 | | 1 | 6 | M | [ ] |
+| 3.1 | `Feat: generate the ore catalog from the configured seed` | 4 | 1 | | 1 | 6 | M | [x] |
 | 3.2 | `Feat: port the mppinfo command to Brigadier` | 2 | 1 | | 1 | 4 | S | [ ] |
 | 3.3 | `Feat: register ore and storage blocks` | 7 | 1 | | 5 | 13 | M | [ ] |
 | 3.4 | `Feat: add falling, absorbing, damaging and powered block behaviours` | 7 | 3 | | 3 | 13 | M | [ ] |
@@ -328,6 +328,7 @@ Les blocs et objets générés sont enregistrés dans le jeu. À la fin de la ph
   - suppression de `ModBootstrap`.
 - **Fichiers** : C `config/MppConfigFile`, `config/WordGenDictionary`, `MppConfigFileTest`, `WordGenDictionaryTest` ; M `MinecraftPlusPlus` ; D `init/ModBootstrap`.
 - **Tests** : fichier créé au premier lancement ; fichier mal formé signalé clairement ; dictionnaire chargé.
+- **Réalisé** : un fichier mal formé arrête le jeu avec un message qui donne le chemin du fichier et la marche à suivre. La tâche Gradle `writeGameTestSeed` écrit `seed=42` dans la configuration du serveur GameTest avant chaque lancement : les GameTest connaissent ainsi le contenu généré. Au démarrage du serveur de test, le journal affiche les 7 minerais de la seed 42, identiques à la capture 1.12.
 
 #### 3.2 `Feat: port the mppinfo command to Brigadier`
 - **Contenu** : `/mppinfo` (niveau de permission 2, c'est-à-dire les commandes activées) enregistrée par `CommandRegistrationCallback` et affichant `SetInfoFormatter`. Suppression de `CommandMppInfo`.

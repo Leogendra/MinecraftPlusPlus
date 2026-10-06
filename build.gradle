@@ -31,6 +31,21 @@ fabricApi {
 	}
 }
 
+// The game tests run with seed 42, one of the golden seeds, so that they can check the generated content
+def writeGameTestSeed = tasks.register("writeGameTestSeed") {
+	def seedFile = layout.buildDirectory.file("run/gameTest/config/minecraftpp/MppConfig.mpp")
+	outputs.file(seedFile)
+	outputs.upToDateWhen { false }
+
+	doLast {
+		seedFile.get().asFile.text = "seed=42\n"
+	}
+}
+
+tasks.named("runGameTest") {
+	dependsOn writeGameTestSeed
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
