@@ -1,9 +1,8 @@
-package fr.minecraftpp.generation;
+package fr.minecraftpp.core.ore;
 
 import java.util.List;
 import java.util.Random;
 
-import fr.minecraftpp.enumeration.OreProperties;
 
 public class OreRarity
 {

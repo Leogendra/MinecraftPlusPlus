@@ -130,7 +130,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 2.1 | `Test: capture 1.12 generator outputs as golden fixtures` | 4 | | | | 4 | S | [x] |
 | 2.2 | `Refactor: move the constraint solver to the core package` | 3 | 1 | 13 | | 17 | L | [x] |
 | 2.3 | `Refactor: move the name generator to the core package` | 1 | | 8 | | 9 | M | [x] |
-| 2.4 | `Refactor: move ore value types and distributions to the core package` | 5 | | 13 | | 18 | L | [ ] |
+| 2.4 | `Refactor: move ore value types and distributions to the core package` | 5 | | 13 | | 18 | L | [x] |
 | 2.5 | `Refactor: describe ore sets as immutable definitions` | 10 | | | | 10 | M | [ ] |
 | 2.6 | `Refactor: compute tool and armor stats in the core` | 2 | 1 | 2 | 5 | 10 | M | [ ] |
 | 2.7 | `Refactor: generate the seven ore sets as definitions` | 7 | | 6 | 2 | 15 | M | [ ] |
@@ -243,6 +243,10 @@ Le code Java pur est déplacé dans `core`. La logique couplée aux classes Mine
   - valeurs connues de la loi normale ;
   - bornes de `OreRarity` (au plus 20 filons, densité au plus 20) ;
   - `Rarity.next()` plafonne à `LEGENDARY`.
+- **Réalisé** :
+  - déplacés : la loi normale (4 classes), `Color` (rendue immuable), `FlammabilityOf`, `HarvestLevel`, `ToolType` (`SPADE` devient `SHOVEL`), `OreRarity` ;
+  - non déplacés, car inutiles avec des définitions immuables et des tags : `UniqueArrayList` (liste de paiement de la balise, remplacée par un tag), `IColored`, `ModelType`. Ils disparaissent avec l'ancien arbre ;
+  - bug latent corrigé dans `ContinuedFraction` : `equals(double, double, double)` s'appelait lui-même à l'infini. Les couleurs de la 1.12 n'atteignaient jamais cette branche, donc les tirages ne changent pas ; `NormalDistributionTest` couvre le cas.
 
 #### 2.5 `Refactor: describe ore sets as immutable definitions`
 - **Contenu** :

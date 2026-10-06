@@ -1,16 +1,16 @@
-package fr.minecraftpp.color;
+package fr.minecraftpp.core.ore;
 
 import java.util.Random;
 
-import fr.minecraftpp.util.normalDistribution.NormalDistribution;
+import fr.minecraftpp.core.random.NormalDistribution;
 
 public class Color
 {
 	public static final Color WHITE = new Color(255, 255, 255);
 
-	private int red;
-	private int green;
-	private int blue;
+	private final int red;
+	private final int green;
+	private final int blue;
 
 	public Color(int red, int green, int blue)
 	{

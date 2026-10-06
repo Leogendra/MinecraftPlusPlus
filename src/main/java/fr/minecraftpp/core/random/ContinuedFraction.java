@@ -3,7 +3,7 @@
  * in apache.commons.math3.util
  */
 
-package fr.minecraftpp.util.normalDistribution;
+package fr.minecraftpp.core.random;
 
 public abstract class ContinuedFraction
 {
@@ -101,41 +101,41 @@ public abstract class ContinuedFraction
 	 * From apache.commons.math3.util.precision
 	 */
 
-	private static final int POSITIVE_ZERO_FLOAT_BITS = Float.floatToRawIntBits(+0.0f);
-	private static final int NEGATIVE_ZERO_FLOAT_BITS = Float.floatToRawIntBits(-0.0f);
-	private static final int SGN_MASK_FLOAT = 0x80000000;
+	private static final long POSITIVE_ZERO_DOUBLE_BITS = Double.doubleToRawLongBits(+0.0);
+	private static final long NEGATIVE_ZERO_DOUBLE_BITS = Double.doubleToRawLongBits(-0.0);
+	private static final long SGN_MASK = 0x8000000000000000L;
 
 	public static boolean equals(double x, double y, double eps)
 	{
 		return equals(x, y, 1) || Math.abs(y - x) <= eps;
 	}
 
-	public static boolean equals(final float x, final float y, final int maxUlps)
+	/*
+	 * The 1.12 port only had a float version of this method: the call above resolved to equals(double, double, double) itself and recursed forever. The 1.12 colors never reached the continued fraction, which hid the bug.
+	 */
+	public static boolean equals(final double x, final double y, final int maxUlps)
 	{
-
-		final int xInt = Float.floatToRawIntBits(x);
-		final int yInt = Float.floatToRawIntBits(y);
+		final long xInt = Double.doubleToRawLongBits(x);
+		final long yInt = Double.doubleToRawLongBits(y);
 
 		final boolean isEqual;
-		if (((xInt ^ yInt) & SGN_MASK_FLOAT) == 0)
+		if (((xInt ^ yInt) & SGN_MASK) == 0L)
 		{
-
 			isEqual = Math.abs(xInt - yInt) <= maxUlps;
 		}
 		else
 		{
-
-			final int deltaPlus;
-			final int deltaMinus;
+			final long deltaPlus;
+			final long deltaMinus;
 			if (xInt < yInt)
 			{
-				deltaPlus = yInt - POSITIVE_ZERO_FLOAT_BITS;
-				deltaMinus = xInt - NEGATIVE_ZERO_FLOAT_BITS;
+				deltaPlus = yInt - POSITIVE_ZERO_DOUBLE_BITS;
+				deltaMinus = xInt - NEGATIVE_ZERO_DOUBLE_BITS;
 			}
 			else
 			{
-				deltaPlus = xInt - POSITIVE_ZERO_FLOAT_BITS;
-				deltaMinus = yInt - NEGATIVE_ZERO_FLOAT_BITS;
+				deltaPlus = xInt - POSITIVE_ZERO_DOUBLE_BITS;
+				deltaMinus = yInt - NEGATIVE_ZERO_DOUBLE_BITS;
 			}
 
 			if (deltaPlus > maxUlps)
@@ -146,9 +146,8 @@ public abstract class ContinuedFraction
 			{
 				isEqual = deltaMinus <= (maxUlps - deltaPlus);
 			}
-
 		}
 
-		return isEqual && !Float.isNaN(x) && !Float.isNaN(y);
+		return isEqual && !Double.isNaN(x) && !Double.isNaN(y);
 	}
 }

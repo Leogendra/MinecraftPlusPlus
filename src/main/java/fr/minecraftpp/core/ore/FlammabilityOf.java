@@ -1,10 +1,7 @@
-package fr.minecraftpp.enumeration;
+package fr.minecraftpp.core.ore;
 
 import java.util.Random;
 
-import fr.minecraftpp.anotation.Mod;
-
-@Mod("Minecraftpp")
 public enum FlammabilityOf
 {
 	STONE(0, 0, false), PLANKS(5, 20, false), LOG(5, 5, false), LEAVES(30, 60, false), PLANT(60, 100, false), HAY(60, 20, false), VINE(15, 100, false), BOOKSHELF(30, 20, false), NETHERRACK(0, 0, true);

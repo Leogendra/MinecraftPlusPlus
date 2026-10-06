@@ -3,7 +3,7 @@
  * in apache.commons.math3.special
  */
 
-package fr.minecraftpp.util.normalDistribution;
+package fr.minecraftpp.core.random;
 
 public class Gamma
 {
