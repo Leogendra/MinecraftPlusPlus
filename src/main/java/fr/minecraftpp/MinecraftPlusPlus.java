@@ -6,6 +6,7 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.minecraftpp.command.MppInfoCommand;
 import fr.minecraftpp.config.MppConfigFile;
 import fr.minecraftpp.config.WordGenDictionary;
 import fr.minecraftpp.core.config.MalformedSeedException;
@@ -15,6 +16,7 @@ import fr.minecraftpp.core.set.generator.OreCatalogGenerator;
 import fr.minecraftpp.core.text.SetInfoFormatter;
 import fr.minecraftpp.core.trait.TraitCatalog;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
 
 /**
@@ -34,6 +36,8 @@ public class MinecraftPlusPlus implements ModInitializer
 		catalog = generateCatalog(seed);
 
 		LOGGER.info("Minecraft++ seed {}, generated ores:\n{}", seed, SetInfoFormatter.format(catalog));
+
+		CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) -> MppInfoCommand.register(dispatcher, catalog));
 	}
 
 	/**

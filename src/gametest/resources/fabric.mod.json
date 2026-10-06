@@ -6,7 +6,8 @@
 	"environment": "*",
 	"entrypoints": {
 		"fabric-gametest": [
-			"fr.minecraftpp.gametest.ModLoadingGameTest"
+			"fr.minecraftpp.gametest.ModLoadingGameTest",
+			"fr.minecraftpp.gametest.MppInfoCommandGameTest"
 		]
 	},
 	"depends": {
