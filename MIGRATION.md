@@ -141,7 +141,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 3.3 | `Feat: register ore and storage blocks` | 7 | 1 | | 5 | 13 | M | [x] |
 | 3.4 | `Feat: add falling, absorbing, damaging and powered block behaviours` | 7 | 3 | | 3 | 13 | M | [x] |
 | 3.5 | `Feat: register generated items with data components` | 4 | 1 | | 8 | 13 | M | [x] |
-| 3.6 | `Feat: register tools and armors from generated materials` | 4 | 1 | | 16 | 21 | L | [ ] |
+| 3.6 | `Feat: register tools and armors from generated materials` | 4 | 1 | | 16 | 21 | L | [x] |
 | 3.7 | `Feat: list generated content in creative tabs` | 2 | 1 | | | 3 | S | [ ] |
 | 3.8 | `Feat: register fuel values and flammability` | 3 | 1 | | | 4 | S | [ ] |
 | 4.1 | `Feat: serve a generated in-memory pack` | 8 | 4 | | | 12 | M | [ ] |
@@ -393,6 +393,11 @@ Les blocs et objets générés sont enregistrés dans le jeu. À la fin de la ph
   - suppression des 5 outils, des 8 armures et des 3 classes `inventory/*`.
 - **Fichiers** : C 3 + `ToolAndArmorTest` ; M `ContentRegistrar` ; D 16.
 - **Tests** : durabilité, dégâts et protection par pièce conformes aux définitions du commit 2.6.
+- **Réalisé** :
+  - les outils utilisent les tags vanilla `incorrect_for_*_tool` du niveau de minage du matériau, ce qui évite de générer ces tags : les minerais générés seront rangés dans les tags vanilla `needs_*_tool` (commit 4.3), et outils vanilla et générés se comportent alors de la même façon ;
+  - le bonus de dégâts du matériau vanilla vaut 0 : chaque outil reçoit son attaque complète, calculée dans `core` comme en 1.12 ;
+  - la hache, la pelle et la houe dérivent des classes vanilla, pour écorcer, créer des chemins et labourer ;
+  - la réparation passe par le tag `minecraftpp:<nom>_repair_materials` (règle de nommage dans `core/set/TagIds`), rempli au commit 4.3.
 
 #### 3.7 `Feat: list generated content in creative tabs`
 - **Contenu** : `CreativeTabEntries` ajoute le contenu généré aux onglets créatifs via `CreativeModeTabEvents`, avec un ordre stable, set par set.

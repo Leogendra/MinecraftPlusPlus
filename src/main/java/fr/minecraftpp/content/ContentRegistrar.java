@@ -9,16 +9,24 @@ import fr.minecraftpp.content.block.behaviour.BlockBehaviourModules;
 import fr.minecraftpp.content.item.DynamicBlockItem;
 import fr.minecraftpp.content.item.DynamicItem;
 import fr.minecraftpp.content.item.ItemPropertiesFactory;
+import fr.minecraftpp.content.material.ArmorItemFactory;
+import fr.minecraftpp.content.material.MaterialFactory;
+import fr.minecraftpp.content.material.ToolItemFactory;
 import fr.minecraftpp.core.set.ContentIds;
 import fr.minecraftpp.core.set.OreCatalog;
 import fr.minecraftpp.core.set.OreSetDefinition;
 import fr.minecraftpp.core.set.SetType;
+import fr.minecraftpp.core.set.material.ArmorPiece;
+import fr.minecraftpp.core.set.material.MaterialDefinition;
+import fr.minecraftpp.core.set.material.ToolType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -67,6 +75,27 @@ public final class ContentRegistrar
 		if (set.type() == SetType.METAL)
 		{
 			registerItem(content, ContentIds.nugget(set), properties -> new DynamicItem(properties, set.rarity(), false), new Item.Properties());
+		}
+
+		set.material().ifPresent(material -> registerEquipment(content, set, material));
+	}
+
+	/**
+	 * The five tools and four armor pieces of a material or metal set.
+	 */
+	private static void registerEquipment(RegisteredContent content, OreSetDefinition set, MaterialDefinition material)
+	{
+		ToolMaterial toolMaterial = MaterialFactory.toolMaterial(set, material);
+		ArmorMaterial armorMaterial = MaterialFactory.armorMaterial(set, material);
+
+		for (ToolType toolType : ToolType.values())
+		{
+			registerItem(content, ContentIds.tool(set, toolType), properties -> ToolItemFactory.create(toolType, toolMaterial, material.tools().attack(toolType), set.rarity(), properties), new Item.Properties());
+		}
+
+		for (ArmorPiece piece : ArmorPiece.values())
+		{
+			registerItem(content, ContentIds.armor(set, piece), properties -> ArmorItemFactory.create(piece, armorMaterial, set.rarity(), properties), new Item.Properties());
 		}
 	}
 
