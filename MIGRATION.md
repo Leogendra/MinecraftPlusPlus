@@ -134,7 +134,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 2.5 | `Refactor: describe ore sets as immutable definitions` | 10 | | | | 10 | M | [x] |
 | 2.6 | `Refactor: compute tool and armor stats in the core` | 2 | 1 | 2 | 5 | 10 | M | [x] |
 | 2.7 | `Refactor: generate the seven ore sets as definitions` | 7 | | 6 | 2 | 15 | M | [x] |
-| 2.8 | `Refactor: express variants and recipes as core definitions` | 8 | | 1 | 20 | 29 | L | [ ] |
+| 2.8 | `Refactor: express variants and recipes as core definitions` | 8 | | 1 | 20 | 29 | L | [x] |
 | 2.9 | `Refactor: parse seeds and compare world seeds in the core` | 3 | | 1 | | 4 | S | [ ] |
 | 3.1 | `Feat: generate the ore catalog from the configured seed` | 4 | 1 | | 1 | 6 | M | [ ] |
 | 3.2 | `Feat: port the mppinfo command to Brigadier` | 2 | 1 | | 1 | 4 | S | [ ] |
@@ -302,6 +302,11 @@ Le code Java pur est déplacé dans `core`. La logique couplée aux classes Mine
   - un set de métal reçoit les recettes de pépite ;
   - pas de recette de teinture bleue pour un métal ;
   - les variantes de fer sont listées.
+- **Réalisé** :
+  - `VariantCatalog` est construit à partir du catalogue et de `VariantRules` (commit 2.7), qui reste la seule règle « quel rôle remplace quel objet vanilla » ;
+  - recettes : `Ingredient` (un objet, une liste d'objets ou un tag), `RecipeCategory`, et les trois records derrière `RecipeDefinition`. `SmeltingRecipeDefinition` couvre le four et le haut fourneau : comme les minerais vanilla, les minerais et l'équipement en métal se cuisent aussi au haut fourneau ;
+  - les deux variantes de minerai (pierre et deepslate) se cuisent ;
+  - la classe 1.12 `IronNuggetRecipe` n'était qu'un garde-fou : seul le vrai lingot de fer donnait des pépites de fer vanilla. Elle devient une règle du commit 4.5 : une recette vanilla dont le résultat a des variantes n'est pas réécrite.
 
 #### 2.9 `Refactor: parse seeds and compare world seeds in the core`
 - **Contenu** :

@@ -12,8 +12,18 @@ import fr.minecraftpp.core.set.material.ToolType;
  */
 public final class ContentIds
 {
+	public static final String NAMESPACE = "minecraftpp";
+
 	private ContentIds()
 	{
+	}
+
+	/**
+	 * The complete identifier of a generated content, in the mod namespace.
+	 */
+	public static String full(String path)
+	{
+		return NAMESPACE + ":" + path;
 	}
 
 	public static String item(OreSetDefinition set)
