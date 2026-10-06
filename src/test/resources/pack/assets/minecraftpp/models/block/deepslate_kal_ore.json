@@ -1,0 +1,7 @@
+{
+	"parent": "minecraftpp:block/tinted_overlay_cube",
+	"textures": {
+		"background": "minecraft:block/deepslate",
+		"overlay": "minecraftpp:block/ore_4"
+	}
+}

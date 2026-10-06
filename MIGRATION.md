@@ -145,7 +145,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 3.7 | `Feat: list generated content in creative tabs` | 2 | 1 | | | 3 | S | [x] |
 | 3.8 | `Feat: register fuel values and flammability` | 3 | 1 | | | 4 | S | [x] |
 | 4.1 | `Feat: serve a generated in-memory pack` | 12 | 4 | | | 16 | L | [x] |
-| 4.2 | `Feat: generate block states, models and item definitions` | 8 | 2 | 24 | 17 | 51 | XL | [ ] |
+| 4.2 | `Feat: generate block states, models and item definitions` | 20 | 4 | 24 | 19 | 67 | XL | [x] |
 | 4.3 | `Feat: generate recipes, loot tables and tags` | 8 | 1 | | | 9 | M | [ ] |
 | 4.4 | `Feat: generate ore features and replace vanilla ores` | 5 | 1 | | 1 | 7 | M | [ ] |
 | 4.4b | `Feat: add copper as a generated ore role` | | | | | | M | [ ] |
@@ -439,6 +439,14 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
   - suppression des 14 textures Scenarium, inutilisées depuis le commit « Removed Scenarium », ainsi que de `ModModelManager`, `ModRenderItem` et `DynamicColor`.
 - **Fichiers** : C 4 + `AssetWritersTest` et 3 JSON de référence ; M les 2 points d'entrée ; R 24 ; D 17.
 - **Tests** : JSON identiques aux références ; vérification visuelle en jeu, ou GameTest client selon D9.
+- **Réalisé** :
+  - **Rendu de la 1.12 conservé.** Le bloc de stockage est un cube teinté, le minerai une surimpression teintée sur la pierre ou la deepslate. Les deux modèles parents (`tinted_cube`, `tinted_overlay_cube`) sont des fichiers statiques du jar. Chaque bloc reçoit un état de bloc et un modèle générés, qui ne nomment que ses textures.
+  - **Objets** : un modèle par objet à texture unique et une définition `items/*.json` par objet, teinte `minecraft:constant` à la couleur du set. Les blocs portés en main utilisent le modèle de leur bloc. Écart mineur : seuls les outils sont tenus comme des outils (`item/handheld`) ; les autres objets utilisent `item/generated`, alors qu'en 1.12 tout était en `handheld`.
+  - **Teinte des blocs posés** : `DynamicBlockTints` (client) enregistre une couleur constante par bloc avec `BlockColorRegistry`. Aucun calque de rendu n'est à déclarer : 26.1.2 déduit le calque de chaque face de la transparence de sa texture.
+  - Les générateurs sont listés dans `GeneratedPackWriters`. `ContentIds.blocks` donne les trois blocs d'un set, `TextureIds` la règle de nommage des textures.
+  - 24 textures déplacées. Suppressions : les 14 textures Scenarium, `ModModelManager`, `ModRenderItem`, `DynamicColor`, ainsi que `IColored` et `ModelType`, devenus inutiles.
+  - 3 tests JUnit : 5 fichiers comparés à leurs références (seed 42) ; une définition par objet ; pour les 4 seeds de référence, chaque modèle et chaque texture du mod cités existent.
+  - **À vérifier en jeu** : aspect des blocs, des minerais (pierre et deepslate) et des objets.
 
 #### 4.3 `Feat: generate recipes, loot tables and tags`
 - **Contenu** :
@@ -642,7 +650,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 4.1 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que le pack généré en mémoire (4.1) : 99 tests JUnit et 19 GameTest au vert. **Prochaine étape : 4.2**, les états de blocs, modèles et définitions d'objets, écrits par de nouveaux `GeneratedResourceWriter` ajoutés à la liste de `MinecraftPlusPlus.onInitialize`.
+**État** : commits 1.1 à 4.2 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 et 4.2 : 102 tests JUnit et 19 GameTest au vert. **Prochaine étape : 4.3**, recettes, tables de loot et tags, écrits par de nouveaux `GeneratedResourceWriter` ajoutés à `GeneratedPackWriters`.
 
 **Environnement** :
 

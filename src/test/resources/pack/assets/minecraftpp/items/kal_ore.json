@@ -1,0 +1,9 @@
+{
+	"model": {
+		"type": "minecraft:model",
+		"model": "minecraftpp:block/kal_ore",
+		"tints": [
+			{ "type": "minecraft:constant", "value": 13110258 }
+		]
+	}
+}

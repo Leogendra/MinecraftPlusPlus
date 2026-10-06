@@ -1,5 +1,6 @@
 package fr.minecraftpp.core.set;
 
+import java.util.List;
 import java.util.Locale;
 
 import fr.minecraftpp.core.set.material.ArmorPiece;
@@ -51,6 +52,14 @@ public final class ContentIds
 	public static String deepslateOre(OreSetDefinition set)
 	{
 		return "deepslate_" + set.name() + "_ore";
+	}
+
+	/**
+	 * The three blocks of a set: its ore, the deepslate variant of the ore and its storage block.
+	 */
+	public static List<String> blocks(OreSetDefinition set)
+	{
+		return List.of(ore(set), deepslateOre(set), storageBlock(set));
 	}
 
 	public static String nugget(OreSetDefinition set)
