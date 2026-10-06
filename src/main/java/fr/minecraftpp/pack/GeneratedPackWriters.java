@@ -12,6 +12,7 @@ import fr.minecraftpp.pack.data.RecipeWriter;
 import fr.minecraftpp.pack.data.RepairMaterialTagWriter;
 import fr.minecraftpp.pack.data.TagWriter;
 import fr.minecraftpp.pack.vanilla.VanillaData;
+import fr.minecraftpp.pack.vanilla.VanillaLootTableRewriter;
 import fr.minecraftpp.pack.vanilla.VanillaRecipeRewriter;
 import fr.minecraftpp.pack.vanilla.VariantTagWriter;
 
@@ -29,6 +30,6 @@ public final class GeneratedPackWriters
 	 */
 	public static List<GeneratedResourceWriter> all(VanillaData vanillaData)
 	{
-		return List.of(new BlockStateWriter(), new BlockModelWriter(), new ItemModelWriter(), new ItemDefinitionWriter(), new RecipeWriter(), new LootTableWriter(), new TagWriter(), new RepairMaterialTagWriter(), new OreFeatureWriter(), new VariantTagWriter(), new VanillaRecipeRewriter(vanillaData));
+		return List.of(new BlockStateWriter(), new BlockModelWriter(), new ItemModelWriter(), new ItemDefinitionWriter(), new RecipeWriter(), new LootTableWriter(), new TagWriter(), new RepairMaterialTagWriter(), new OreFeatureWriter(), new VariantTagWriter(), new VanillaRecipeRewriter(vanillaData), new VanillaLootTableRewriter(vanillaData));
 	}
 }

@@ -150,7 +150,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 4.4 | `Feat: generate ore features and replace vanilla ores` | 8 | 4 | | 1 | 13 | M | [x] |
 | 4.4b | `Feat: add copper as a generated ore role` | 3 | 15 | | | 18 | L | [x] |
 | 4.5 | `Feat: make vanilla recipes accept generated variants` | 16 | 4 | | | 20 | L | [x] |
-| 4.6 | `Feat: replace vanilla loot with generated variants` | 2 | 1 | | | 3 | S | [ ] |
+| 4.6 | `Feat: replace vanilla loot with generated variants` | 5 | 3 | | | 8 | M | [x] |
 | 4.7 | `Feat: pay villagers with the generated currency` | 3 | 1 | | | 4 | S | [ ] |
 | 4.8 | `Feat: generate translations and walk damage types` | 4 | 2 | | 1 | 7 | M | [ ] |
 | 4.9 | `Feat: generate tinted equipment assets for armors` | 3 | 2 | 6 | | 11 | M | [ ] |
@@ -514,6 +514,11 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
 - **Contenu** : `VanillaLootTableRewriter` remplace chaque objet vanilla ayant des variantes par un tirage équiprobable entre ses variantes. C'est l'équivalent JSON du patch `LootTable` de la 1.12.
 - **Fichiers** : C `VanillaLootTableRewriter`, `VanillaLootTableRewriterTest` ; M `MinecraftPlusPlus`.
 - **Tests** : réécriture d'une table de coffre d'exemple.
+- **Réalisé** :
+  - Une entrée `item` dont l'objet a des variantes devient une entrée `loot_table` qui contient une table en ligne : un tirage parmi les variantes, toutes de poids 1. L'entrée garde son poids, ses conditions et ses fonctions.
+  - **Écart avec la 1.12** : le nombre d'objets est conservé. La 1.12 le ramenait à 1, faute de recopier la pile.
+  - Les tables `blocks/` restent vanilla : en 1.12 les blocs n'utilisaient pas les tables de loot, et un bloc de fer vanilla posé doit toujours se récupérer lui-même. Toutes les autres tables sont concernées (coffres, entités, pêche, archéologie, équipement des monstres…).
+  - 3 tests JUnit sur des tables d'exemple écrites à la main, et 2 GameTest : sur 50 tirages d'un coffre de forgeron d'armes, le lingot généré du fer apparaît et le lingot vanilla jamais ; le serveur charge chaque table réécrite.
 
 #### 4.7 `Feat: pay villagers with the generated currency`
 - **Contenu** : `VillagerTradeRewriter` remplace `minecraft:emerald` par la monnaie générée dans les 387 fichiers `villager_trade`, et les objets demandés par leurs variantes.
@@ -677,7 +682,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 4.5 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.5 : 116 tests JUnit et 27 GameTest au vert. **Prochaine étape : 4.6**, loot vanilla remplacé par les variantes.
+**État** : commits 1.1 à 4.6 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.6 : 119 tests JUnit et 29 GameTest au vert. **Prochaine étape : 4.7**, échanges des villageois payés avec la monnaie générée.
 
 **Environnement** :
 

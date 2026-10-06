@@ -17,7 +17,8 @@
 			"fr.minecraftpp.gametest.GeneratedPackGameTest",
 			"fr.minecraftpp.gametest.RecipeAndLootGameTest",
 			"fr.minecraftpp.gametest.OreGenerationGameTest",
-			"fr.minecraftpp.gametest.VariantCraftingGameTest"
+			"fr.minecraftpp.gametest.VariantCraftingGameTest",
+			"fr.minecraftpp.gametest.LootVariantGameTest"
 		]
 	},
 	"depends": {
