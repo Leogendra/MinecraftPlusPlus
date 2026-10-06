@@ -1,20 +1,5 @@
-*.sh
-*.bat
-!gradlew.bat
-
-CHANGELOG
-LICENSE.txt
-
-temp/
-runtime/
-reobf/
-mappingviewer/
+# Logs of runs outside Gradle
 logs/
-lib/
-eclipse/
-docs/
-conf/
-bin/
 
 # Gradle
 .gradle/
@@ -27,6 +12,7 @@ run/
 
 # IDE
 .idea/
+bin/
 *.iml
 .vscode/
 .settings/

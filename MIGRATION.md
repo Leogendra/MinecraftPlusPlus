@@ -159,7 +159,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 6.1 | `Feat: store the Minecraft++ seed in new worlds` | 4 | 2 | | | 6 | S | [x] |
 | 6.2 | `Feat: refuse to open worlds created with another seed` | 2 | 2 | | | 4 | S | [x] |
 | 6.3 | `Feat: show the Minecraft++ seed status in the world list` | 1 | 3 | | | 4 | S | [x] |
-| 7.1 | `Chore: remove the MCP workspace and bundled Mojang files` | | 1 | | 2 896 | 2 897 | XL | [ ] |
+| 7.1 | `Chore: remove the MCP workspace and bundled Mojang files` | | 1 | | 2 897 | 2 898 | XL | [x] |
 | 7.2 | `Docs: rewrite the README for the Fabric version` | 1 | 1 | | | 2 | S | [ ] |
 
 Hors suppression finale (7.1), la migration touche environ 350 fichiers, dont 75 déplacés. Sur les 111 fichiers du mod :
@@ -626,6 +626,11 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
   - D les 2 annotations `anotation/*` ;
   - M `.gitignore`.
 - **Tests** : `./gradlew build` complet ; partie manuelle en jeu (création de monde, minage, fabrication, enchantement, échange).
+- **Réalisé** :
+  - Préalables vérifiés : le tag `v1.12-final` existe, `src/minecraft/fr/` ne contenait plus que les deux annotations et `UniqueArrayList`, inutilisés.
+  - 2 897 fichiers suivis supprimés par `git rm` : `src/minecraft/**` (code décompilé, MCP, `Start.java`, les 3 dernières classes du mod 1.12), `src/.gitignore`, `jars/**`, `assets/.gitignore`. Les fichiers locaux non suivis ne sont pas touchés. La 1.12 reste récupérable par le tag.
+  - `.gitignore` : les entrées MCP sont retirées (`*.sh`, `*.bat`, `CHANGELOG`, `LICENSE.txt`, `temp/`, `runtime/`, `reobf/`…). L'entrée `LICENSE.txt` aurait d'ailleurs caché le fichier de licence attendu par D10. `bin/` passe dans la section IDE, `logs/` reste ignoré.
+  - `./gradlew clean build` vert. **À vérifier en jeu** : la partie manuelle prévue (création de monde, minage, fabrication, enchantement, échange).
 
 #### 7.2 `Docs: rewrite the README for the Fabric version`
 - **Contenu** :
@@ -719,7 +724,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 6.3 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 6 sont terminées : 131 tests JUnit et 37 GameTest au vert. **Prochaine étape : 7.1**, suppression de l'espace MCP.
+**État** : commits 1.1 à 7.1 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 6 sont terminées, ainsi que 7.1 : 131 tests JUnit et 37 GameTest au vert. **Prochaine étape : 7.2**, le README.
 
 **Environnement** :
 
