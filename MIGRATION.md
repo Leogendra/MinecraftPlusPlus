@@ -142,7 +142,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 3.4 | `Feat: add falling, absorbing, damaging and powered block behaviours` | 7 | 3 | | 3 | 13 | M | [x] |
 | 3.5 | `Feat: register generated items with data components` | 4 | 1 | | 8 | 13 | M | [x] |
 | 3.6 | `Feat: register tools and armors from generated materials` | 4 | 1 | | 16 | 21 | L | [x] |
-| 3.7 | `Feat: list generated content in creative tabs` | 2 | 1 | | | 3 | S | [ ] |
+| 3.7 | `Feat: list generated content in creative tabs` | 2 | 1 | | | 3 | S | [x] |
 | 3.8 | `Feat: register fuel values and flammability` | 3 | 1 | | | 4 | S | [ ] |
 | 4.1 | `Feat: serve a generated in-memory pack` | 8 | 4 | | | 12 | M | [ ] |
 | 4.2 | `Feat: generate block states, models and item definitions` | 8 | 2 | 24 | 17 | 51 | XL | [ ] |
@@ -403,6 +403,7 @@ Les blocs et objets générés sont enregistrés dans le jeu. À la fin de la ph
 - **Contenu** : `CreativeTabEntries` ajoute le contenu généré aux onglets créatifs via `CreativeModeTabEvents`, avec un ordre stable, set par set.
 - **Fichiers** : C `CreativeTabEntries`, `CreativeTabEntriesTest` ; M `MinecraftPlusPlus`.
 - **Tests** : ordre et contenu des onglets.
+- **Réalisé** : les onglets suivent ceux du vanilla moderne. Les minerais vont dans « Blocs naturels », les blocs de stockage dans « Construction », les objets et pépites dans « Ingrédients », les outils dans « Outils », l'épée, la hache et l'armure dans « Combat ».
 
 #### 3.8 `Feat: register fuel values and flammability`
 - **Contenu** : enregistrement des durées de combustion (`FuelValueEvents`) et de l'inflammabilité (`FlammableBlockRegistry`) des objets et blocs concernés.

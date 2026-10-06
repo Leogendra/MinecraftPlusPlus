@@ -10,6 +10,7 @@ import fr.minecraftpp.command.MppInfoCommand;
 import fr.minecraftpp.config.MppConfigFile;
 import fr.minecraftpp.config.WordGenDictionary;
 import fr.minecraftpp.content.ContentRegistrar;
+import fr.minecraftpp.content.CreativeTabEntries;
 import fr.minecraftpp.content.RegisteredContent;
 import fr.minecraftpp.core.config.MalformedSeedException;
 import fr.minecraftpp.core.set.ContentIds;
@@ -40,6 +41,7 @@ public class MinecraftPlusPlus implements ModInitializer
 		LOGGER.info("Minecraft++ seed {}, generated ores:\n{}", seed, SetInfoFormatter.format(catalog));
 
 		content = ContentRegistrar.register(catalog);
+		CreativeTabEntries.register(catalog, content);
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) -> MppInfoCommand.register(dispatcher, catalog));
 	}
