@@ -160,7 +160,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 6.2 | `Feat: refuse to open worlds created with another seed` | 2 | 2 | | | 4 | S | [x] |
 | 6.3 | `Feat: show the Minecraft++ seed status in the world list` | 1 | 3 | | | 4 | S | [x] |
 | 7.1 | `Chore: remove the MCP workspace and bundled Mojang files` | | 1 | | 2 897 | 2 898 | XL | [x] |
-| 7.2 | `Docs: rewrite the README for the Fabric version` | 1 | 1 | | | 2 | S | [ ] |
+| 7.2 | `Docs: rewrite the README for the Fabric version` | | 2 | | | 2 | S | [x] |
 
 Hors suppression finale (7.1), la migration touche environ 350 fichiers, dont 75 déplacés. Sur les 111 fichiers du mod :
 
@@ -640,6 +640,7 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
   - construction depuis les sources (`./gradlew build`) ;
   - deux exemples concrets : jouer la seed d'un ami, relire les minerais avec `/mppinfo` ;
   - le fichier `LICENSE` selon D10.
+- **Réalisé** : le README décrit la version Fabric : rôles et traits, installation avec Fabric Loader et Fabric API, les deux seeds et `config/minecraftpp/MppConfig.mpp`, deux exemples (jouer la seed d'un ami, lire les minerais avec `/mppinfo`, avec une sortie réelle), la construction et les tests, et la licence Apache-2.0. Il renvoie au fichier `LICENSE`, **que tu dois encore ajouter** (D10), et au tag `v1.12-final` pour la version 1.12.
 - **Fichiers** : M `README.md` ; C `LICENSE`.
 - **Tests** : relecture ; la procédure d'installation suivie pas à pas fonctionne.
 
@@ -724,7 +725,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 7.1 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 6 sont terminées, ainsi que 7.1 : 131 tests JUnit et 37 GameTest au vert. **Prochaine étape : 7.2**, le README.
+**État** : migration terminée. Les commits 1.1 à 7.2 sont faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`) ; rien n'est poussé ni fusionné. 131 tests JUnit et 37 GameTest au vert. Restent de ton côté : ajouter le fichier `LICENSE` (D10), les vérifications en jeu notées « À vérifier en jeu » dans les étapes, puis la fusion. Une revue par un agent indépendant (`louis-code-review`) peut être lancée sur demande.
 
 **Environnement** :
 
