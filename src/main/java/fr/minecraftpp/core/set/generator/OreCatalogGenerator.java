@@ -1,9 +1,11 @@
 package fr.minecraftpp.core.set.generator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.TreeMap;
 
 import fr.minecraftpp.core.naming.NameGenerator;
@@ -30,9 +32,10 @@ public final class OreCatalogGenerator
 		Map<Integer, List<OreProperties>> propertiesByOre = groupByOre(Backtrack.generateSolution(rand, NUMBER_OF_ORES));
 
 		List<OreSetGenerator> generators = new ArrayList<>();
+		Set<String> usedNames = new HashSet<>();
 		for (List<OreProperties> properties : propertiesByOre.values())
 		{
-			generators.add(SetFactory.generateSet(properties, rand, names.nextName()));
+			generators.add(SetFactory.generateSet(properties, rand, uniqueName(names, usedNames)));
 		}
 
 		GenerationContext context = new GenerationContext();
@@ -48,6 +51,21 @@ public final class OreCatalogGenerator
 		}
 
 		return new OreCatalog(seed, sets);
+	}
+
+	/**
+	 * Draws names until one is not taken by a previous set. About one seed in a hundred draws the same name twice: in 1.12 two sets then shared their identifiers, which the 26.1.2 registries refuse. The names have their own random source, so drawing again changes no ore.
+	 */
+	private static String uniqueName(NameGenerator names, Set<String> usedNames)
+	{
+		String name = names.nextName();
+
+		while (!usedNames.add(name))
+		{
+			name = names.nextName();
+		}
+
+		return name;
 	}
 
 	/**

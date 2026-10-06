@@ -138,7 +138,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 2.9 | `Refactor: parse seeds and compare world seeds in the core` | 3 | | 1 | | 4 | S | [x] |
 | 3.1 | `Feat: generate the ore catalog from the configured seed` | 4 | 1 | | 1 | 6 | M | [x] |
 | 3.2 | `Feat: port the mppinfo command to Brigadier` | 2 | 1 | | 1 | 4 | S | [x] |
-| 3.3 | `Feat: register ore and storage blocks` | 7 | 1 | | 5 | 13 | M | [ ] |
+| 3.3 | `Feat: register ore and storage blocks` | 7 | 1 | | 5 | 13 | M | [x] |
 | 3.4 | `Feat: add falling, absorbing, damaging and powered block behaviours` | 7 | 3 | | 3 | 13 | M | [ ] |
 | 3.5 | `Feat: register generated items with data components` | 4 | 1 | | 8 | 13 | M | [ ] |
 | 3.6 | `Feat: register tools and armors from generated materials` | 4 | 1 | | 16 | 21 | L | [ ] |
@@ -346,6 +346,10 @@ Les blocs et objets générés sont enregistrés dans le jeu. À la fin de la ph
   - les 21 blocs attendus sont enregistrés pour la seed de référence ;
   - l'air garde l'identifiant d'état 0 et l'aller-retour identifiant ↔ état est exact (garde contre le piège de l'étude) ;
   - un bloc posé émet la lumière prévue.
+- **Réalisé** :
+  - dureté et résistance de la 1.12 : 3 et 5 pour les minerais (4,5 et 5 en deepslate), 5 et 10 pour les blocs de stockage. Le minerai de gemme donne l'expérience tirée en 1.12, le minerai de métal n'en donne pas ;
+  - les tests de contenu sont des GameTest (seed 42), sans `fabric-loader-junit` (D2) ;
+  - **bug corrigé** : environ une seed sur cent (177 sur 20 000) donnait le même nom à deux sets. Les identifiants étaient alors en double, ce que les registres 26.1.2 refusent. `OreCatalogGenerator` retire un nom déjà pris. Le générateur de noms a sa propre suite aléatoire : les minerais ne changent pas, et les seeds sans doublon restent identiques à la 1.12. Test : `SetNameUniquenessTest`.
 
 #### 3.4 `Feat: add falling, absorbing, damaging and powered block behaviours`
 - **Contenu** :

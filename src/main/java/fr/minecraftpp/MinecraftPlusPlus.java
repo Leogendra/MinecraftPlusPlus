@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import fr.minecraftpp.command.MppInfoCommand;
 import fr.minecraftpp.config.MppConfigFile;
 import fr.minecraftpp.config.WordGenDictionary;
+import fr.minecraftpp.content.ContentRegistrar;
+import fr.minecraftpp.content.RegisteredContent;
 import fr.minecraftpp.core.config.MalformedSeedException;
 import fr.minecraftpp.core.set.ContentIds;
 import fr.minecraftpp.core.set.OreCatalog;
@@ -28,14 +30,16 @@ public class MinecraftPlusPlus implements ModInitializer
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	private static OreCatalog catalog;
+	private static RegisteredContent content;
 
 	@Override
 	public void onInitialize()
 	{
 		long seed = readSeed();
 		catalog = generateCatalog(seed);
-
 		LOGGER.info("Minecraft++ seed {}, generated ores:\n{}", seed, SetInfoFormatter.format(catalog));
+
+		content = ContentRegistrar.register(catalog);
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) -> MppInfoCommand.register(dispatcher, catalog));
 	}
@@ -52,6 +56,21 @@ public class MinecraftPlusPlus implements ModInitializer
 		else
 		{
 			return catalog;
+		}
+	}
+
+	/**
+	 * The blocks and items registered for the sets of the current game.
+	 */
+	public static RegisteredContent content()
+	{
+		if (content == null)
+		{
+			throw new IllegalStateException("Minecraft++ content is not registered yet");
+		}
+		else
+		{
+			return content;
 		}
 	}
 
