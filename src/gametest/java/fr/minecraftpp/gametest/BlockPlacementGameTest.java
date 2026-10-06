@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * The game tests run with seed 42 (see writeGameTestSeed in build.gradle).
+ * The game tests run with the seed of GameTestSets.
  */
 public class BlockPlacementGameTest
 {

@@ -140,7 +140,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 3.2 | `Feat: port the mppinfo command to Brigadier` | 2 | 1 | | 1 | 4 | S | [x] |
 | 3.3 | `Feat: register ore and storage blocks` | 7 | 1 | | 5 | 13 | M | [x] |
 | 3.4 | `Feat: add falling, absorbing, damaging and powered block behaviours` | 7 | 3 | | 3 | 13 | M | [x] |
-| 3.5 | `Feat: register generated items with data components` | 4 | 1 | | 8 | 13 | M | [ ] |
+| 3.5 | `Feat: register generated items with data components` | 4 | 1 | | 8 | 13 | M | [x] |
 | 3.6 | `Feat: register tools and armors from generated materials` | 4 | 1 | | 16 | 21 | L | [ ] |
 | 3.7 | `Feat: list generated content in creative tabs` | 2 | 1 | | | 3 | S | [ ] |
 | 3.8 | `Feat: register fuel values and flammability` | 3 | 1 | | | 4 | S | [ ] |
@@ -380,6 +380,11 @@ Les blocs et objets générés sont enregistrés dans le jeu. À la fin de la ph
   - valeurs nutritives et saturation conformes à la définition ;
   - couleur de rareté ;
   - l'objet briquet allume un feu.
+- **Réalisé** :
+  - **seed des GameTest** : passage de 42 à −7046029254386353131, une des seeds de référence, qui couvre en jeu la nourriture, le briquet, la brillance, les dégâts au contact, la redstone, la monnaie, l'enchantement, le charbon, le diamant et les métaux fer et or. `GameTestSets` documente ses sets. La chute, absente de cette seed, est testée par son module seul ;
+  - couleur de rareté (D4) : le jeu réécrit le composant `item_name` après les propriétés de l'objet. La couleur est donc appliquée par `getName` dans `DynamicItem` et `DynamicBlockItem`, ce qui donne le même résultat à l'affichage ;
+  - nourriture : en 1.12, la saturation était un modificateur. Le constructeur vanilla `saturationModifier` fait le même calcul (deux fois la nutrition multipliée par le modificateur). Le statut « nourriture pour loup » passera par le tag `wolf_food` (commit 4.3) ;
+  - le briquet allume un feu comme le briquet vanilla et se consomme, comme en 1.12. L'objet « monnaie d'enchantement » n'est pas un composant : c'est le tag du commit 5.1.
 
 #### 3.6 `Feat: register tools and armors from generated materials`
 - **Contenu** :

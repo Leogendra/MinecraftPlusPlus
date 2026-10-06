@@ -31,14 +31,14 @@ fabricApi {
 	}
 }
 
-// The game tests run with seed 42, one of the golden seeds, so that they can check the generated content
+// The game tests run with one of the golden seeds, chosen because its sets cover most traits and roles, so that they can check the generated content
 def writeGameTestSeed = tasks.register("writeGameTestSeed") {
 	def seedFile = layout.buildDirectory.file("run/gameTest/config/minecraftpp/MppConfig.mpp")
 	outputs.file(seedFile)
 	outputs.upToDateWhen { false }
 
 	doLast {
-		seedFile.get().asFile.text = "seed=42\n"
+		seedFile.get().asFile.text = "seed=-7046029254386353131\n"
 	}
 }
 

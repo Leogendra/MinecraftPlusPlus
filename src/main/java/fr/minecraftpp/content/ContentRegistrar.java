@@ -6,15 +6,18 @@ import fr.minecraftpp.content.block.BlockPropertiesFactory;
 import fr.minecraftpp.content.block.DynamicBlock;
 import fr.minecraftpp.content.block.DynamicOreBlock;
 import fr.minecraftpp.content.block.behaviour.BlockBehaviourModules;
+import fr.minecraftpp.content.item.DynamicBlockItem;
+import fr.minecraftpp.content.item.DynamicItem;
+import fr.minecraftpp.content.item.ItemPropertiesFactory;
 import fr.minecraftpp.core.set.ContentIds;
 import fr.minecraftpp.core.set.OreCatalog;
 import fr.minecraftpp.core.set.OreSetDefinition;
+import fr.minecraftpp.core.set.SetType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -35,6 +38,7 @@ public final class ContentRegistrar
 		for (OreSetDefinition set : catalog.sets())
 		{
 			registerBlocks(content, set);
+			registerItems(content, set);
 		}
 
 		return content;
@@ -48,20 +52,43 @@ public final class ContentRegistrar
 		BlockBehaviourModules oreModules = BlockBehaviourModules.forOre(set.ore());
 		BlockBehaviourModules storageModules = BlockBehaviourModules.forStorageBlock(set.block(), level -> level.damageSources().hotFloor());
 
-		registerBlockWithItem(content, ContentIds.ore(set), properties -> new DynamicOreBlock(properties, set.ore(), oreModules), BlockPropertiesFactory.ore());
-		registerBlockWithItem(content, ContentIds.deepslateOre(set), properties -> new DynamicOreBlock(properties, set.ore(), oreModules), BlockPropertiesFactory.deepslateOre());
-		registerBlockWithItem(content, ContentIds.storageBlock(set), properties -> new DynamicBlock(properties, set.block(), storageModules), BlockPropertiesFactory.storageBlock(set.block()));
+		registerBlockWithItem(content, set, ContentIds.ore(set), properties -> new DynamicOreBlock(properties, set.ore(), oreModules), BlockPropertiesFactory.ore());
+		registerBlockWithItem(content, set, ContentIds.deepslateOre(set), properties -> new DynamicOreBlock(properties, set.ore(), oreModules), BlockPropertiesFactory.deepslateOre());
+		registerBlockWithItem(content, set, ContentIds.storageBlock(set), properties -> new DynamicBlock(properties, set.block(), storageModules), BlockPropertiesFactory.storageBlock(set.block()));
 	}
 
-	private static void registerBlockWithItem(RegisteredContent content, String path, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties)
+	/**
+	 * The main item of each set, and the nugget of the metal sets.
+	 */
+	private static void registerItems(RegisteredContent content, OreSetDefinition set)
+	{
+		registerItem(content, ContentIds.item(set), properties -> new DynamicItem(properties, set.rarity(), set.item().firestarter()), ItemPropertiesFactory.mainItem(set.item()));
+
+		if (set.type() == SetType.METAL)
+		{
+			registerItem(content, ContentIds.nugget(set), properties -> new DynamicItem(properties, set.rarity(), false), new Item.Properties());
+		}
+	}
+
+	private static void registerBlockWithItem(RegisteredContent content, OreSetDefinition set, String path, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties)
 	{
 		ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, identifier(path));
 		Block block = Registry.register(BuiltInRegistries.BLOCK, blockKey, factory.apply(properties.setId(blockKey)));
 		content.addBlock(path, block);
 
+		registerItem(content, path, itemProperties -> new DynamicBlockItem(block, itemProperties.useBlockDescriptionPrefix(), set.rarity()), new Item.Properties());
+	}
+
+	static void registerItem(RegisteredContent content, String path, Function<Item.Properties, Item> factory, Item.Properties properties)
+	{
 		ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, identifier(path));
-		BlockItem item = new BlockItem(block, new Item.Properties().setId(itemKey).useBlockDescriptionPrefix());
-		item.registerBlocks(Item.BY_BLOCK, item);
+		Item item = factory.apply(properties.setId(itemKey));
+
+		if (item instanceof DynamicBlockItem blockItem)
+		{
+			blockItem.registerBlocks(Item.BY_BLOCK, item);
+		}
+
 		content.addItem(path, Registry.register(BuiltInRegistries.ITEM, itemKey, item));
 	}
 
