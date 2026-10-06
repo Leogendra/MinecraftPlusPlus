@@ -631,4 +631,30 @@ Règles déjà fixées :
 Questions à trancher au moment de planifier cette phase :
 
 - Une même seed avec deux fichiers différents donne deux jeux de minerais. Faut-il enregistrer une empreinte du fichier dans `mppSeed.mpp` et l'ajouter à `WorldSeedStatus` ?
-- Quelles bornes exposer pour chaque trait, et faut-il corriger au passage les bizarreries héritées de la 1.12 (lumière à 15 ou 0, glissance toujours à 0,4, accélération à 0,5 ou 1,5, vitesse de la hache toujours à −3,2) ?
+- Quelles bornes exposer pour chaque trait, et faut-il corriger au passage les bizarreries héritées de la 1.12 (lumière à 15 ou 0, glissance toujours à 0,4, accélération à 0,5 ou 1,5, vitesse de la hache toujours à −3,2, houe à −4 de vitesse d'attaque, donc 0 attaque par seconde) ?
+- En 1.12, le troisième paramètre de la nourriture tiré à 1/5 est « nourriture pour loup », pas « toujours mangeable ».
+
+## 10. Point de reprise (2026-10-06)
+
+**État** : commits 1.1 à 3.8 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées : 91 tests JUnit et 17 GameTest au vert. **Prochaine étape : 4.1**, le pack généré en mémoire. Aucun code de 4.1 n'est encore écrit.
+
+**Environnement** :
+
+- le `JAVA_HOME` du système pointe vers un JDK 17. Gradle doit tourner avec le JDK 26 installé : `JAVA_HOME="/c/Program Files/Java/jdk-26.0.2" ./gradlew build` (environ 20 s, GameTest compris) ;
+- les sources décompilées de Minecraft 26.1.2 s'obtiennent avec `./gradlew genSources`. Elles sont dans `.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-{common,clientOnly}-*/26.1.2/*-sources.jar`, à décompresser pour y chercher les API ;
+- les sources de Fabric API se téléchargent depuis `maven.fabricmc.net` (artefacts `-sources.jar`) ;
+- les GameTest tournent avec la seed −7046029254386353131 (`writeGameTestSeed` dans `build.gradle`) ; leurs sets sont décrits dans `GameTestSets`.
+
+**Pistes relevées pour 4.1** :
+
+- Fabric ajoute son pack de mods par un mixin sur le constructeur de `PackRepository` (champ `sources`, voir `net.fabricmc.fabric.mixin.resource.PackRepositoryMixin` et `ModResourcePackCreator`). Il faut faire de même : ajouter un `GeneratedPackSource` (un `RepositorySource`) pour chaque `BuiltInPackSource` trouvé parmi les sources. Son champ `packType` est privé, il faudra un accesseur ;
+- `PackResources` demande `getRootResource`, `getResource(PackType, Identifier)`, `listResources`, `getNamespaces`, `getMetadataSection` et `location()` ;
+- `Pack.readMetaAndCreate(location, resourcesSupplier, packType, new PackSelectionConfig(true, Pack.Position.TOP, false))` crée un pack obligatoire et toujours actif ;
+- reste à trouver la version de format de pack de 26.1.2 pour les métadonnées.
+
+**Points à reporter dans les commits suivants** :
+
+- 4.3 : tags `needs_stone_tool`, `needs_iron_tool`, `needs_diamond_tool`, `mineable/pickaxe`, `<nom>_repair_materials` (règle dans `core/set/TagIds`), `wolf_food`, `infiniburn_overworld` (blocs qui brûlent comme le netherrack), `beacon_payment_items`, `beacon_base_blocks` ;
+- 4.5 : ne pas réécrire une recette vanilla dont le résultat a des variantes (ancien `IronNuggetRecipe`) ;
+- 4.8 : remplacer `hotFloor()` dans `ContentRegistrar.registerBlocks` par le type de dégâts généré ;
+- 4.9 : l'equipment asset de chaque matériau est `minecraftpp:<nom>` (`MaterialFactory.equipmentAsset`).
