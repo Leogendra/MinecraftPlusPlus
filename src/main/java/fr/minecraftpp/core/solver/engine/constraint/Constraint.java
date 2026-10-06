@@ -1,9 +1,9 @@
-package fr.minecraftpp.randomizer.backtrack.engine.constraints;
+package fr.minecraftpp.core.solver.engine.constraint;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
 
-import fr.minecraftpp.randomizer.backtrack.engine.Assignment;
+import fr.minecraftpp.core.solver.engine.Assignment;
 
 /**
  * Classe abstraite pour une contrainte. Cette classe a vocation à être

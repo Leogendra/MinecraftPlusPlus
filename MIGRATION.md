@@ -128,7 +128,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 1.2 | `Feat: bootstrap an empty Fabric mod with smoke tests` | 8 | 2 | | | 10 | M | [x] |
 | 1.3 | `Build: run build and tests in GitHub Actions` | 1 | | | | 1 | S | [x] |
 | 2.1 | `Test: capture 1.12 generator outputs as golden fixtures` | 4 | | | | 4 | S | [x] |
-| 2.2 | `Refactor: move the constraint solver to the core package` | 3 | 1 | 13 | | 17 | L | [ ] |
+| 2.2 | `Refactor: move the constraint solver to the core package` | 3 | 1 | 13 | | 17 | L | [x] |
 | 2.3 | `Refactor: move the name generator to the core package` | 1 | | 8 | | 9 | M | [ ] |
 | 2.4 | `Refactor: move ore value types and distributions to the core package` | 5 | | 13 | | 18 | L | [ ] |
 | 2.5 | `Refactor: describe ore sets as immutable definitions` | 10 | | | | 10 | M | [ ] |
@@ -218,7 +218,8 @@ Le code Java pur est déplacé dans `core`. La logique couplée aux classes Mine
   - `CSP` perd son seul import vanilla et son effet de bord global : il ne remplace plus `System.err` ; c'est la source des messages parasites qui est supprimée ;
   - `Evaluator` évaluait les contraintes en intension avec le moteur JavaScript Nashorn, absent de Java 25 : il est remplacé par `BooleanExpression`, un évaluateur limité à la grammaire produite par `Pretreatment` (entiers, `==`, `&&`, `||`, parenthèses) ;
   - ajout de JUnit (D2) ; la règle d'architecture est un test JUnit qui lit les imports.
-- **Fichiers** : R 12 ; D `Evaluator` ; M `build.gradle` ; C `BooleanExpression`, `BooleanExpressionTest`, `BacktrackTest`, `ConstraintTest`, `CoreArchitectureTest`.
+- **Fichiers** : R 12, plus `OreProperties` (prévu en 2.4, déplacé ici car `Pretreatment` en dépend) ; D `Evaluator` ; M `build.gradle`, `gradle.properties` ; C `BooleanExpression`, `GoldenFixture` (lecture des fichiers de référence), `BooleanExpressionTest`, `BacktrackTest`, `ConstraintTest`, `CoreArchitectureTest`.
+- **Réalisé** : `CSP` reçoit le `Random` en paramètre au lieu de le lire dans un champ statique de `Backtrack`. Un test supplémentaire vérifie que, pour les 4 seeds de référence, le solveur donne exactement les types de sets et les rôles de la 1.12.
 - **Tests** :
   - la solution satisfait toutes les contraintes, pour 100 seeds ;
   - même seed, même solution ;

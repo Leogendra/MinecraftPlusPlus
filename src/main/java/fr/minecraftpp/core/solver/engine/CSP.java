@@ -1,25 +1,24 @@
-package fr.minecraftpp.randomizer.backtrack.engine;
+package fr.minecraftpp.core.solver.engine;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Random;
 
-import fr.minecraftpp.randomizer.backtrack.Backtrack;
-import fr.minecraftpp.randomizer.backtrack.engine.constraints.Constraint;
-import net.minecraft.util.LoggingPrintStream;
+import fr.minecraftpp.core.solver.engine.constraint.Constraint;
 
 public class CSP
 {
 
 	public Network network;
 	private Assignment assignment;
+	private final Random rand;
 
 	private ArrayList<Assignment> solutions;
 
-	public CSP(Network r)
+	public CSP(Network r, Random rand)
 	{
 		network = r;
+		this.rand = rand;
 		solutions = new ArrayList<Assignment>();
 		assignment = new Assignment();
 		faireArcConsistance();
@@ -27,11 +26,8 @@ public class CSP
 
 	public Assignment searchSolution()
 	{
-		System.setErr(new PrintStream(new ByteArrayOutputStream()));
 		assignment.clear();
-		Assignment sol = backtrack();
-		System.setErr(new LoggingPrintStream("STDERR", System.err));
-		return sol;
+		return backtrack();
 	}
 
 	private Assignment backtrack()
@@ -170,7 +166,7 @@ public class CSP
 			@Override
 			public int compare(Object o1, Object o2)
 			{
-				return Backtrack.getRand().nextInt(3) - 1;
+				return rand.nextInt(3) - 1;
 			}
 
 		});

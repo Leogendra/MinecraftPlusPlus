@@ -1,4 +1,4 @@
-package fr.minecraftpp.enumeration;
+package fr.minecraftpp.core.ore;
 
 import java.util.List;
 

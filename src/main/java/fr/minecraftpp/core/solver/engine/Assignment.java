@@ -1,4 +1,4 @@
-package fr.minecraftpp.randomizer.backtrack.engine;
+package fr.minecraftpp.core.solver.engine;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,11 +1,11 @@
-package fr.minecraftpp.randomizer.backtrack.engine;
+package fr.minecraftpp.core.solver.engine;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import fr.minecraftpp.randomizer.backtrack.engine.constraints.Constraint;
+import fr.minecraftpp.core.solver.engine.constraint.Constraint;
 
 /* (non-Javadoc)
  *  Choix de codage :

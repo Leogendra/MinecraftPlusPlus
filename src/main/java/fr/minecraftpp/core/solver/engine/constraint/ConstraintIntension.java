@@ -1,9 +1,9 @@
-package fr.minecraftpp.randomizer.backtrack.engine.constraints;
+package fr.minecraftpp.core.solver.engine.constraint;
 
 import java.io.BufferedReader;
 
-import fr.minecraftpp.randomizer.backtrack.engine.Assignment;
-import fr.minecraftpp.randomizer.backtrack.util.Evaluator;
+import fr.minecraftpp.core.solver.engine.Assignment;
+import fr.minecraftpp.core.solver.util.BooleanExpression;
 
 public class ConstraintIntension extends ConstraintTotale
 {
@@ -25,7 +25,7 @@ public class ConstraintIntension extends ConstraintTotale
 			aEval = aEval.replace("$" + variable, a.get(variable) + "");
 		}
 
-		boolean evaluer = Evaluator.evaluer(aEval);
+		boolean evaluer = BooleanExpression.evaluate(aEval);
 		return !evaluer;
 	}
 

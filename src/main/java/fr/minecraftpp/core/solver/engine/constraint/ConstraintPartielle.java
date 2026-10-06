@@ -1,4 +1,4 @@
-package fr.minecraftpp.randomizer.backtrack.engine.constraints;
+package fr.minecraftpp.core.solver.engine.constraint;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;

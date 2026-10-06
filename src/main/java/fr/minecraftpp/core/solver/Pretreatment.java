@@ -1,4 +1,4 @@
-package fr.minecraftpp.randomizer.backtrack;
+package fr.minecraftpp.core.solver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
 
-import fr.minecraftpp.enumeration.OreProperties;
+import fr.minecraftpp.core.ore.OreProperties;
 
 public class Pretreatment
 {
