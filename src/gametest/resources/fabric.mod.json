@@ -1,0 +1,15 @@
+{
+	"schemaVersion": 1,
+	"id": "minecraftpp-gametest",
+	"version": "1.0.0",
+	"name": "Minecraft++ game tests",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-gametest": [
+			"fr.minecraftpp.gametest.ModLoadingGameTest"
+		]
+	},
+	"depends": {
+		"minecraftpp": "*"
+	}
+}

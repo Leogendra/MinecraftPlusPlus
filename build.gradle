@@ -20,6 +20,17 @@ loom {
 	}
 }
 
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = "minecraftpp-gametest"
+		enableGameTests = true
+		// Client game tests require accepting the Minecraft EULA (decision D9): client checks are manual
+		enableClientGameTests = false
+		eula = false
+	}
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
