@@ -11,6 +11,8 @@ import fr.minecraftpp.config.MppConfigFile;
 import fr.minecraftpp.config.WordGenDictionary;
 import fr.minecraftpp.content.ContentRegistrar;
 import fr.minecraftpp.content.CreativeTabEntries;
+import fr.minecraftpp.content.FlammabilityRegistration;
+import fr.minecraftpp.content.FuelRegistration;
 import fr.minecraftpp.content.RegisteredContent;
 import fr.minecraftpp.core.config.MalformedSeedException;
 import fr.minecraftpp.core.set.ContentIds;
@@ -42,6 +44,8 @@ public class MinecraftPlusPlus implements ModInitializer
 
 		content = ContentRegistrar.register(catalog);
 		CreativeTabEntries.register(catalog, content);
+		FuelRegistration.register(catalog, content);
+		FlammabilityRegistration.register(catalog, content);
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) -> MppInfoCommand.register(dispatcher, catalog));
 	}

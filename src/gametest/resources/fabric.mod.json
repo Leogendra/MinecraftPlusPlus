@@ -12,7 +12,8 @@
 			"fr.minecraftpp.gametest.BlockBehaviourGameTest",
 			"fr.minecraftpp.gametest.ItemComponentsGameTest",
 			"fr.minecraftpp.gametest.FireStarterGameTest",
-			"fr.minecraftpp.gametest.ToolAndArmorGameTest"
+			"fr.minecraftpp.gametest.ToolAndArmorGameTest",
+			"fr.minecraftpp.gametest.FuelGameTest"
 		]
 	},
 	"depends": {

@@ -143,7 +143,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 3.5 | `Feat: register generated items with data components` | 4 | 1 | | 8 | 13 | M | [x] |
 | 3.6 | `Feat: register tools and armors from generated materials` | 4 | 1 | | 16 | 21 | L | [x] |
 | 3.7 | `Feat: list generated content in creative tabs` | 2 | 1 | | | 3 | S | [x] |
-| 3.8 | `Feat: register fuel values and flammability` | 3 | 1 | | | 4 | S | [ ] |
+| 3.8 | `Feat: register fuel values and flammability` | 3 | 1 | | | 4 | S | [x] |
 | 4.1 | `Feat: serve a generated in-memory pack` | 8 | 4 | | | 12 | M | [ ] |
 | 4.2 | `Feat: generate block states, models and item definitions` | 8 | 2 | 24 | 17 | 51 | XL | [ ] |
 | 4.3 | `Feat: generate recipes, loot tables and tags` | 8 | 1 | | | 9 | M | [ ] |
@@ -409,6 +409,7 @@ Les blocs et objets générés sont enregistrés dans le jeu. À la fin de la ph
 - **Contenu** : enregistrement des durées de combustion (`FuelValueEvents`) et de l'inflammabilité (`FlammableBlockRegistry`) des objets et blocs concernés.
 - **Fichiers** : C `FuelRegistration`, `FlammabilityRegistration`, `FuelAndFlammabilityGameTest` ; M `MinecraftPlusPlus`.
 - **Tests** : un four brûle l'objet pendant la durée prévue ; valeurs d'inflammabilité enregistrées.
+- **Réalisé** : les durées et les blocs inflammables sont calculés par des fonctions testées en JUnit (seed 42 : un bloc qui brûle comme la vigne). La durée de combustion est vérifiée en GameTest. Un bloc qui brûle à l'infini, comme le netherrack, n'est pas inflammable : il ira dans le tag `infiniburn_overworld` (commit 4.3).
 
 ### Phase 4 — Pack généré (ressources et données)
 
