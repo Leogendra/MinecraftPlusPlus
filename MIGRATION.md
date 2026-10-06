@@ -133,7 +133,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 2.4 | `Refactor: move ore value types and distributions to the core package` | 5 | | 13 | | 18 | L | [x] |
 | 2.5 | `Refactor: describe ore sets as immutable definitions` | 10 | | | | 10 | M | [x] |
 | 2.6 | `Refactor: compute tool and armor stats in the core` | 2 | 1 | 2 | 5 | 10 | M | [x] |
-| 2.7 | `Refactor: generate the seven ore sets as definitions` | 7 | | 6 | 2 | 15 | M | [ ] |
+| 2.7 | `Refactor: generate the seven ore sets as definitions` | 7 | | 6 | 2 | 15 | M | [x] |
 | 2.8 | `Refactor: express variants and recipes as core definitions` | 8 | | 1 | 20 | 29 | L | [ ] |
 | 2.9 | `Refactor: parse seeds and compare world seeds in the core` | 3 | | 1 | | 4 | S | [ ] |
 | 3.1 | `Feat: generate the ore catalog from the configured seed` | 4 | 1 | | 1 | 6 | M | [ ] |
@@ -282,6 +282,11 @@ Le code Java pur est déplacé dans `core`. La logique couplée aux classes Mine
   - `ModManager` et `IDynamic` sont supprimés.
 - **Fichiers** : R 6 ; D 2 ; C `OreCatalog`, `SetInfoFormatter`, `DisplayNameFormatter`, `OreCatalogGoldenTest`, `SetFactoryTest`, `SetInfoFormatterTest`, `DisplayNameFormatterTest`.
 - **Tests** : **test de non-régression principal** : pour les 3 seeds, le texte produit est identique aux fichiers de référence du commit 2.1.
+- **Réalisé** :
+  - générateurs dans `core/set/generator`, en deux passes comme en 1.12 (construction de tous les sets, puis effets de tous les sets). Les bizarreries de la 1.12 sont reproduites et commentées : minerai des sets matériau et métal toujours à la pioche en pierre, palier du matériau toujours tiré, divisions entières ;
+  - **tirages cachés découverts** : en 1.12, le rôle monnaie touchait la classe `EntityVillager`, dont l'initialisation statique (la table des échanges) cherchait une variante aléatoire de 22 objets vanilla avec la même suite aléatoire que la génération. `LegacyVillagerTradeDraws` reproduit ces tirages ; `GenerationContext` suit les variantes déjà enregistrées, et `VariantRules` (dans `core/variant`) dit quels objets vanilla chaque rôle remplace ;
+  - `OreCatalogGoldenTest` compare, pour les 4 seeds, le texte de `/mppinfo`, chaque valeur générée et les noms affichés. Vérification ponctuelle supplémentaire : aucun écart sur les 44 seeds capturées au commit 2.1 ;
+  - autres tests : `SetFactoryTest`, `LegacyVillagerTradeDrawsTest`, `SetInfoFormatterTest`, `DisplayNameFormatterTest`.
 
 #### 2.8 `Refactor: express variants and recipes as core definitions`
 - **Contenu** :

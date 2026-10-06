@@ -25,9 +25,4 @@ public record MaterialDefinition(int tier, int textureId, HarvestLevel miningLev
 		Bounds.check("material texture", textureId, 1, TEXTURE_COUNT);
 		Bounds.check("enchantability", enchantability, 1, Integer.MAX_VALUE);
 	}
-
-	public MaterialDefinition withMiningLevel(HarvestLevel newMiningLevel)
-	{
-		return new MaterialDefinition(this.tier, this.textureId, newMiningLevel, this.enchantability, this.tools, this.armor);
-	}
 }
