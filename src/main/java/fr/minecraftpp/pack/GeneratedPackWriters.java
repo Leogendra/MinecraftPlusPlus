@@ -7,6 +7,7 @@ import fr.minecraftpp.pack.asset.BlockStateWriter;
 import fr.minecraftpp.pack.asset.ItemDefinitionWriter;
 import fr.minecraftpp.pack.asset.ItemModelWriter;
 import fr.minecraftpp.pack.data.LootTableWriter;
+import fr.minecraftpp.pack.data.OreFeatureWriter;
 import fr.minecraftpp.pack.data.RecipeWriter;
 import fr.minecraftpp.pack.data.RepairMaterialTagWriter;
 import fr.minecraftpp.pack.data.TagWriter;
@@ -22,6 +23,6 @@ public final class GeneratedPackWriters
 
 	public static List<GeneratedResourceWriter> all()
 	{
-		return List.of(new BlockStateWriter(), new BlockModelWriter(), new ItemModelWriter(), new ItemDefinitionWriter(), new RecipeWriter(), new LootTableWriter(), new TagWriter(), new RepairMaterialTagWriter());
+		return List.of(new BlockStateWriter(), new BlockModelWriter(), new ItemModelWriter(), new ItemDefinitionWriter(), new RecipeWriter(), new LootTableWriter(), new TagWriter(), new RepairMaterialTagWriter(), new OreFeatureWriter());
 	}
 }

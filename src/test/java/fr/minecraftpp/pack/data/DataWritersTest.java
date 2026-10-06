@@ -22,7 +22,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 
 /**
- * Seed 42: kal is a familiar material set whose ore needs a stone tool and drops one kal; it is the only set mined with a stone tool.
+ * Seed 42: kal is a familiar material set whose ore needs a stone tool and drops one kal; it is the only set mined with a stone tool. Its ore generates 20 veins of 9 blocks per chunk, below the 1.12 height 64.
  */
 class DataWritersTest
 {
@@ -32,7 +32,7 @@ class DataWritersTest
 	void filesMatchTheReferences()
 	{
 		GeneratedPackContents seed42 = GeneratedPackFixture.write(42);
-		List<String> locations = List.of("minecraftpp:recipe/kal_pickaxe.json", "minecraftpp:recipe/kal_from_blasting_deepslate_kal_ore.json", "minecraftpp:loot_table/blocks/kal_ore.json", "minecraftpp:loot_table/blocks/kal_block.json", "minecraft:tags/block/needs_stone_tool.json");
+		List<String> locations = List.of("minecraftpp:recipe/kal_pickaxe.json", "minecraftpp:recipe/kal_from_blasting_deepslate_kal_ore.json", "minecraftpp:loot_table/blocks/kal_ore.json", "minecraftpp:loot_table/blocks/kal_block.json", "minecraft:tags/block/needs_stone_tool.json", "minecraftpp:worldgen/configured_feature/kal_ore.json", "minecraftpp:worldgen/placed_feature/kal_ore.json");
 
 		for (String location : locations)
 		{

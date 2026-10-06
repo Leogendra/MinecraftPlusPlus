@@ -22,6 +22,7 @@ import fr.minecraftpp.core.text.SetInfoFormatter;
 import fr.minecraftpp.core.trait.TraitCatalog;
 import fr.minecraftpp.pack.GeneratedPackContents;
 import fr.minecraftpp.pack.GeneratedPackWriters;
+import fr.minecraftpp.world.OreBiomeModifications;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
@@ -50,6 +51,7 @@ public class MinecraftPlusPlus implements ModInitializer
 		FuelRegistration.register(catalog, content);
 		FlammabilityRegistration.register(catalog, content);
 		packContents = GeneratedPackContents.write(catalog, GeneratedPackWriters.all());
+		OreBiomeModifications.register(catalog);
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) -> MppInfoCommand.register(dispatcher, catalog));
 	}

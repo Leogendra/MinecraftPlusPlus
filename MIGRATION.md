@@ -147,7 +147,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 4.1 | `Feat: serve a generated in-memory pack` | 12 | 4 | | | 16 | L | [x] |
 | 4.2 | `Feat: generate block states, models and item definitions` | 20 | 4 | 24 | 19 | 67 | XL | [x] |
 | 4.3 | `Feat: generate recipes, loot tables and tags` | 12 | 7 | | | 19 | L | [x] |
-| 4.4 | `Feat: generate ore features and replace vanilla ores` | 5 | 1 | | 1 | 7 | M | [ ] |
+| 4.4 | `Feat: generate ore features and replace vanilla ores` | 8 | 4 | | 1 | 13 | M | [x] |
 | 4.4b | `Feat: add copper as a generated ore role` | | | | | | M | [ ] |
 | 4.5 | `Feat: make vanilla recipes accept generated variants` | 4 | 1 | | | 5 | S | [ ] |
 | 4.6 | `Feat: replace vanilla loot with generated variants` | 2 | 1 | | | 3 | S | [ ] |
@@ -473,6 +473,12 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
   - suppression de `OreRegistry`.
 - **Fichiers** : C `OreFeatureWriter`, `OreBiomeModifications`, `OreHeightMapping`, `OreHeightMappingTest`, `OreGenerationGameTest` ; M `MinecraftPlusPlus` ; D 1.
 - **Tests** : conversion des hauteurs ; dans un tronçon de monde généré, présence des minerais du mod et absence des minerais vanilla.
+- **Réalisé** :
+  - Une veine 1.12 devient une feature `minecraft:ore` : nombre de veines par tronçon, taille de veine, hauteur uniforme. La veine pose le minerai deepslate là où elle traverse de la deepslate (tags vanilla `stone_ore_replaceables` et `deepslate_ore_replaceables`), alors que la 1.12 ne remplaçait que la pierre.
+  - Hauteurs (D6) : `OreHeightMapping` (`core/world`) donne `[-64, -64 + max - 1]`, la 1.12 excluant le maximum. Une hauteur max de 16 donne donc des veines jusqu'à -49, sous -48.
+  - `OreBiomeModifications` retire les 17 features vanilla du périmètre 1.12 (charbon, fer, or, redstone, diamant, lapis, émeraude) et ajoute les 7 minerais du mod. Le cuivre et les minerais du Nether restent vanilla.
+  - **Écart** : les biomes sont choisis par le tag `minecraft:is_overworld` au lieu de `BiomeSelectors.foundInOverworld()`. Ce dernier ne retient que les biomes que le monde en cours génère : dans un monde plat, ou dans le monde des GameTest, les autres biomes gardaient les minerais vanilla. C'est le GameTest qui l'a révélé.
+  - Le GameTest lit les features des biomes (plaines, badlands, pics dentelés) au lieu de creuser un tronçon : le monde des GameTest est plat. **À vérifier en jeu** : minerais visibles dans un nouveau monde, plus de minerais vanilla du périmètre.
 
 #### 4.4b `Feat: add copper as a generated ore role` (D6)
 - **Contenu** :
@@ -656,7 +662,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 4.3 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.3 : 104 tests JUnit et 23 GameTest au vert. **Prochaine étape : 4.4**, génération des minerais dans le monde.
+**État** : commits 1.1 à 4.4 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.4 : 107 tests JUnit et 24 GameTest au vert. **Prochaine étape : 4.4b**, le rôle cuivre.
 
 **Environnement** :
 
