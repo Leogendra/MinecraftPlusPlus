@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.minecraftpp.content.ModTags;
 import fr.minecraftpp.core.ore.HarvestLevel;
 import fr.minecraftpp.core.set.ContentIds;
 import fr.minecraftpp.core.set.OreCatalog;
@@ -18,7 +19,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 
 /**
- * Adds the generated blocks and items to the vanilla tags that give them their traits: the pickaxe and the tool level needed to mine them, the beacon, the wolf food and the endless fire. Only the non-empty tags are written.
+ * Adds the generated blocks and items to the vanilla tags that give them their traits: the pickaxe and the tool level needed to mine them, the beacon, the wolf food and the endless fire; and to the enchanting currency tag of the mod. Only the non-empty tags are written.
  */
 public final class TagWriter implements GeneratedResourceWriter
 {
@@ -66,6 +67,11 @@ public final class TagWriter implements GeneratedResourceWriter
 		if (set.item().beaconPayment())
 		{
 			add(tags, ItemTags.BEACON_PAYMENT_ITEMS, ContentIds.item(set));
+		}
+
+		if (set.item().enchantingCurrency())
+		{
+			add(tags, ModTags.ENCHANTING_CURRENCY, ContentIds.item(set));
 		}
 
 		if (set.item().food().isPresent() && set.item().food().get().wolfFood())

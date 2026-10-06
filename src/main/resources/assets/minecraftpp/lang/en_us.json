@@ -1,4 +1,5 @@
 {
 	"pack.minecraftpp.generated.title": "Minecraft++ generated content",
-	"pack.minecraftpp.generated.description": "Generated from the Minecraft++ seed"
+	"pack.minecraftpp.generated.description": "Generated from the Minecraft++ seed",
+	"tag.item.minecraftpp.enchanting_currency": "Enchanting Currency"
 }

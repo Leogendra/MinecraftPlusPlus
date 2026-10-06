@@ -154,7 +154,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 4.7 | `Feat: pay villagers with the generated currency` | 6 | 3 | | | 9 | M | [x] |
 | 4.8 | `Feat: generate translations and walk damage types` | 5 | 9 | | 1 | 15 | M | [x] |
 | 4.9 | `Feat: generate tinted equipment assets for armors` | 3 | 2 | 6 | | 11 | M | [x] |
-| 5.1 | `Feat: use the generated enchanting currency in the enchanting table` | 2 | 2 | 1 | | 5 | S | [ ] |
+| 5.1 | `Feat: use the generated enchanting currency in the enchanting table` | 4 | 5 | | 1 | 10 | M | [x] |
 | 5.2 | `Feat: accept generated variants in golem and piglin interactions` | 4 | 2 | | | 6 | M | [ ] |
 | 6.1 | `Feat: store the Minecraft++ seed in new worlds` | 4 | 1 | | | 5 | S | [ ] |
 | 6.2 | `Feat: refuse to open worlds created with another seed` | 2 | 2 | | | 4 | S | [ ] |
@@ -565,6 +565,11 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
   - la texture d'emplacement de la 1.12 (`enchanting_table.png`) devient l'icône d'emplacement `container/slot/lapis_lazuli`.
 - **Fichiers** : C `EnchantmentMenuMixin`, `EnchantingCurrencyGameTest` ; M `minecraftpp.mixins.json`, `TagWriter` ; R 1.
 - **Tests** : la table accepte la monnaie générée et refuse le lapis.
+- **Réalisé** :
+  - Deux mixins, car les deux contrôles du lapis sont dans deux classes. `EnchantingCurrencySlotMixin` vise l'emplacement du lapis, la classe anonyme `EnchantmentMenu$3` (`mayPlace`). `EnchantmentMenuMixin` vise le clic avec Maj (`quickMoveStack`). Tous deux remplacent le test du lapis par le tag `minecraftpp:enchanting_currency` (`ModTags`), que `TagWriter` remplit avec les objets principaux des sets monnaie d'enchantement.
+  - Piège : `stack.is(Items.LAPIS_LAZULI)` est compilé comme la méthode générique `TypedInstance.is(T)`, de descripteur `is(Ljava/lang/Object;)Z`. La cible écrite avec `Item` ne trouvait rien et le serveur refusait de démarrer.
+  - **Écart** : la texture 1.12 de la table (`enchanting_table.png`) ne faisait qu'effacer la silhouette du lapis dans l'emplacement. Plutôt que de la convertir en icône, l'emplacement vide n'affiche plus d'icône (`getNoItemIcon` rend `null`). La texture est supprimée.
+  - 2 GameTest : la table accepte la monnaie générée, refuse le lapis et n'affiche pas d'icône ; le clic avec Maj place la monnaie dans son emplacement.
 
 #### 5.2 `Feat: accept generated variants in golem and piglin interactions` (selon D7)
 - **Contenu** : trois mixins.
@@ -697,7 +702,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 4.9 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 4 sont terminées : 125 tests JUnit et 31 GameTest au vert. **Prochaine étape : 5.1**, monnaie d'enchantement dans la table d'enchantement.
+**État** : commits 1.1 à 5.1 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 4 sont terminées, ainsi que 5.1 : 125 tests JUnit et 33 GameTest au vert. **Prochaine étape : 5.2**, variantes acceptées par le golem de fer et les piglins.
 
 **Environnement** :
 
@@ -710,4 +715,4 @@ Questions à trancher au moment de planifier cette phase :
 
 **Points à reporter dans les commits suivants** :
 
-- 5.1 et 5.2 : les tags de variantes `minecraftpp:variants/<objet vanilla>` existent déjà (`VariantTagIds`) ; les mixins peuvent s'en servir au lieu d'un nouveau tag.
+- 5.2 : les tags de variantes `minecraftpp:variants/<objet vanilla>` existent déjà (`VariantTagIds`) ; les mixins peuvent s'en servir au lieu d'un nouveau tag.

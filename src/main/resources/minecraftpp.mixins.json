@@ -3,7 +3,9 @@
 	"package": "fr.minecraftpp.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"BuiltInPackSourceMixin"
+		"BuiltInPackSourceMixin",
+		"EnchantingCurrencySlotMixin",
+		"EnchantmentMenuMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

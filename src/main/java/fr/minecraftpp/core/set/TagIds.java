@@ -16,4 +16,12 @@ public final class TagIds
 	{
 		return set.name() + "_repair_materials";
 	}
+
+	/**
+	 * The items the enchanting table takes instead of lapis lazuli: the main items of the enchanting currency sets.
+	 */
+	public static String enchantingCurrency()
+	{
+		return "enchanting_currency";
+	}
 }
