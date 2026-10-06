@@ -146,7 +146,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 3.8 | `Feat: register fuel values and flammability` | 3 | 1 | | | 4 | S | [x] |
 | 4.1 | `Feat: serve a generated in-memory pack` | 12 | 4 | | | 16 | L | [x] |
 | 4.2 | `Feat: generate block states, models and item definitions` | 20 | 4 | 24 | 19 | 67 | XL | [x] |
-| 4.3 | `Feat: generate recipes, loot tables and tags` | 8 | 1 | | | 9 | M | [ ] |
+| 4.3 | `Feat: generate recipes, loot tables and tags` | 12 | 7 | | | 19 | L | [x] |
 | 4.4 | `Feat: generate ore features and replace vanilla ores` | 5 | 1 | | 1 | 7 | M | [ ] |
 | 4.4b | `Feat: add copper as a generated ore role` | | | | | | M | [ ] |
 | 4.5 | `Feat: make vanilla recipes accept generated variants` | 4 | 1 | | | 5 | S | [ ] |
@@ -458,6 +458,12 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
   - la fusion d'un minerai donne le bon objet ;
   - miner avec un outil trop faible ne donne rien ;
   - le bloc de set sert de base de balise.
+- **Réalisé** :
+  - `RecipeWriter` traduit les `RecipeDefinition` du `core` dans le format de recette de 26.1.2 (ingrédient écrit comme un objet, une liste d'objets ou `#tag`). `LootTableWriter` : bloc de stockage et minerai de métal se récupèrent eux-mêmes ; minerai de gemme : lui-même avec Toucher de soie, sinon ses objets avec le bonus de Fortune vanilla. L'expérience reste portée par le bloc (`DropExperienceBlock`).
+  - `TagWriter` complète les tags vanilla, sans les remplacer : `mineable/pickaxe`, `needs_stone_tool`, `needs_iron_tool`, `needs_diamond_tool` (rien pour le niveau bois), `beacon_base_blocks`, `beacon_payment_items`, `wolf_food`, `infiniburn_overworld`. Les tags `incorrect_for_*` vanilla incluent déjà les `needs_*` : inutile de les écrire.
+  - **Report** : les tags de variantes partent au commit 4.5, où ils sont utilisés pour la première fois. Les tags de réparation restent dans `RepairMaterialTagWriter` (4.1).
+  - Les records JSON (`RecipeJson`, `LootTableJson`) omettent leurs champs nuls, ce qui donne des fichiers proches des fichiers vanilla.
+  - 2 tests JUnit : 5 fichiers comparés à leurs références (seed 42) ; pour les 4 seeds, tout contenu du mod nommé par une recette, une table de loot ou un tag existe. 4 GameTest : cuisson d'un minerai de gemme et d'un minerai de métal, niveau d'outil requis, objets lâchés, balise.
 
 #### 4.4 `Feat: generate ore features and replace vanilla ores`
 - **Contenu** :
@@ -650,7 +656,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 4.2 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 et 4.2 : 102 tests JUnit et 19 GameTest au vert. **Prochaine étape : 4.3**, recettes, tables de loot et tags, écrits par de nouveaux `GeneratedResourceWriter` ajoutés à `GeneratedPackWriters`.
+**État** : commits 1.1 à 4.3 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.3 : 104 tests JUnit et 23 GameTest au vert. **Prochaine étape : 4.4**, génération des minerais dans le monde.
 
 **Environnement** :
 
@@ -663,7 +669,6 @@ Questions à trancher au moment de planifier cette phase :
 
 **Points à reporter dans les commits suivants** :
 
-- 4.3 : tags `needs_stone_tool`, `needs_iron_tool`, `needs_diamond_tool`, `mineable/pickaxe`, `wolf_food`, `infiniburn_overworld` (blocs qui brûlent comme le netherrack), `beacon_payment_items`, `beacon_base_blocks` ;
-- 4.5 : ne pas réécrire une recette vanilla dont le résultat a des variantes (ancien `IronNuggetRecipe`) ;
+- 4.5 : écrire les tags de variantes (reportés de 4.3) ; ne pas réécrire une recette vanilla dont le résultat a des variantes (ancien `IronNuggetRecipe`) ;
 - 4.8 : remplacer `hotFloor()` dans `ContentRegistrar.registerBlocks` par le type de dégâts généré. Traduire aussi les tags d'objets générés (`tag.item.minecraftpp.<nom>_repair_materials`) : Fabric signale en développement les tags sans traduction ;
 - 4.9 : l'equipment asset de chaque matériau est `minecraftpp:<nom>` (`MaterialFactory.equipmentAsset`).

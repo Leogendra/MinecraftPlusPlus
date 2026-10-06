@@ -44,21 +44,21 @@ public final class GeneratedPackFixture
 	}
 
 	/**
-	 * A generated file of the mod namespace, or a failure when it is missing.
+	 * A generated file, or a failure when it is missing.
 	 *
-	 * @param path the path below the namespace, such as {@code items/xyzium.json}
+	 * @param location the namespace and the path below it, such as {@code minecraftpp:items/xyzium.json}
 	 */
-	public static JsonElement file(GeneratedPackContents contents, PackType type, String path)
+	public static JsonElement file(GeneratedPackContents contents, PackType type, Identifier location)
 	{
-		return parse(contents.resource(type, Identifier.fromNamespaceAndPath(ContentIds.NAMESPACE, path)).orElseThrow(() -> new AssertionError("Missing generated file " + type.getDirectory() + "/" + ContentIds.NAMESPACE + "/" + path)));
+		return parse(contents.resource(type, location).orElseThrow(() -> new AssertionError("Missing generated file " + type.getDirectory() + "/" + location.getNamespace() + "/" + location.getPath())));
 	}
 
 	/**
 	 * The reference file stored at the same place as the generated one, below src/test/resources/pack.
 	 */
-	public static JsonElement reference(PackType type, String path)
+	public static JsonElement reference(PackType type, Identifier location)
 	{
-		return parse(() -> GeneratedPackFixture.class.getResourceAsStream("/pack/" + type.getDirectory() + "/" + ContentIds.NAMESPACE + "/" + path));
+		return parse(() -> GeneratedPackFixture.class.getResourceAsStream("/pack/" + type.getDirectory() + "/" + location.getNamespace() + "/" + location.getPath()));
 	}
 
 	private static JsonElement parse(IoSupplier<InputStream> opener)

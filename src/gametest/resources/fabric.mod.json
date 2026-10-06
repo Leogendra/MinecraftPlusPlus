@@ -14,7 +14,8 @@
 			"fr.minecraftpp.gametest.FireStarterGameTest",
 			"fr.minecraftpp.gametest.ToolAndArmorGameTest",
 			"fr.minecraftpp.gametest.FuelGameTest",
-			"fr.minecraftpp.gametest.GeneratedPackGameTest"
+			"fr.minecraftpp.gametest.GeneratedPackGameTest",
+			"fr.minecraftpp.gametest.RecipeAndLootGameTest"
 		]
 	},
 	"depends": {

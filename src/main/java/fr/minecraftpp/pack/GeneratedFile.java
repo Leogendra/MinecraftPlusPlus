@@ -18,4 +18,14 @@ public record GeneratedFile(PackType type, Identifier location, String content)
 	{
 		return new GeneratedFile(PackType.CLIENT_RESOURCES, Identifier.fromNamespaceAndPath(ContentIds.NAMESPACE, path), PackJson.toJson(json));
 	}
+
+	/**
+	 * A JSON file of the server data, in any namespace: the vanilla tags are extended from the {@code minecraft} namespace.
+	 *
+	 * @param location the namespace and the path below {@code data/<namespace>/}, such as {@code minecraftpp:recipe/xyzium_block.json}
+	 */
+	public static GeneratedFile data(Identifier location, Object json)
+	{
+		return new GeneratedFile(PackType.SERVER_DATA, location, PackJson.toJson(json));
+	}
 }

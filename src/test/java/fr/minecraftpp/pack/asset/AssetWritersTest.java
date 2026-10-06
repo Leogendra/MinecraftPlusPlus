@@ -30,7 +30,9 @@ class AssetWritersTest
 	{
 		for (String path : List.of("blockstates/kal_block.json", "models/block/deepslate_kal_ore.json", "models/item/kal_pickaxe.json", "items/kal_pickaxe.json", "items/kal_ore.json"))
 		{
-			assertEquals(GeneratedPackFixture.reference(PackType.CLIENT_RESOURCES, path), GeneratedPackFixture.file(SEED_42, PackType.CLIENT_RESOURCES, path), path);
+			Identifier location = Identifier.fromNamespaceAndPath(ContentIds.NAMESPACE, path);
+
+			assertEquals(GeneratedPackFixture.reference(PackType.CLIENT_RESOURCES, location), GeneratedPackFixture.file(SEED_42, PackType.CLIENT_RESOURCES, location), path);
 		}
 	}
 

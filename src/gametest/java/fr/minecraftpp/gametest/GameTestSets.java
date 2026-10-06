@@ -34,6 +34,11 @@ public final class GameTestSets
 		return MinecraftPlusPlus.content().block(ContentIds.storageBlock(set(name)));
 	}
 
+	public static Block ore(String name)
+	{
+		return MinecraftPlusPlus.content().block(ContentIds.ore(set(name)));
+	}
+
 	public static Item item(String name)
 	{
 		return MinecraftPlusPlus.content().item(ContentIds.item(set(name)));
