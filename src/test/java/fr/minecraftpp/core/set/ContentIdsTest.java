@@ -11,7 +11,10 @@ import fr.minecraftpp.core.ore.Color;
 import fr.minecraftpp.core.ore.FlammabilityOf;
 import fr.minecraftpp.core.ore.HarvestLevel;
 import fr.minecraftpp.core.ore.Rarity;
-import fr.minecraftpp.core.ore.ToolType;
+import fr.minecraftpp.core.set.material.ArmorPiece;
+import fr.minecraftpp.core.set.material.MaterialDefinition;
+import fr.minecraftpp.core.set.material.SampleMaterials;
+import fr.minecraftpp.core.set.material.ToolType;
 
 class ContentIdsTest
 {
@@ -48,7 +51,7 @@ class ContentIdsTest
 		ItemTraits item = new ItemTraits(1, Color.WHITE, false, 0, false, false, false, Optional.empty());
 		StorageBlockTraits block = new StorageBlockTraits(1, HarvestLevel.WOOD, false, false, 0, FlammabilityOf.STONE, 1, false, 0, 0, 0, 255, 0.6F);
 		OreTraits ore = new OreTraits(1, HarvestLevel.WOOD, new OreDrop.Itself(), false);
-		Optional<MaterialDefinition> material = type.hasMaterial() ? Optional.of(new MaterialDefinition(1, 1, HarvestLevel.IRON, 10)) : Optional.empty();
+		Optional<MaterialDefinition> material = type.hasMaterial() ? Optional.of(SampleMaterials.ironLike()) : Optional.empty();
 
 		return new OreSetDefinition(0, "xyzium", type, Rarity.COMMON, EnumSet.noneOf(VanillaRole.class), new OreGeneration(1, 5, 128), item, block, ore, material);
 	}

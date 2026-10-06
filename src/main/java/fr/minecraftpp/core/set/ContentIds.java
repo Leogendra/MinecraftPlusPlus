@@ -2,7 +2,8 @@ package fr.minecraftpp.core.set;
 
 import java.util.Locale;
 
-import fr.minecraftpp.core.ore.ToolType;
+import fr.minecraftpp.core.set.material.ArmorPiece;
+import fr.minecraftpp.core.set.material.ToolType;
 
 /**
  * Naming rule of the generated identifiers, without namespace: {@code xyzium_ore}, {@code xyzium_block}, {@code xyzium_pickaxe}...

@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import fr.minecraftpp.core.ore.Rarity;
+import fr.minecraftpp.core.set.material.MaterialDefinition;
 
 /**
  * Everything the seed decided about one of the seven generated sets.

@@ -14,6 +14,8 @@ import fr.minecraftpp.core.ore.Color;
 import fr.minecraftpp.core.ore.FlammabilityOf;
 import fr.minecraftpp.core.ore.HarvestLevel;
 import fr.minecraftpp.core.ore.Rarity;
+import fr.minecraftpp.core.set.material.MaterialDefinition;
+import fr.minecraftpp.core.set.material.SampleMaterials;
 
 class OreSetDefinitionTest
 {
@@ -40,7 +42,7 @@ class OreSetDefinitionTest
 	{
 		assertThrows(IllegalArgumentException.class, () -> new ItemTraits(0, Color.WHITE, false, 0, false, false, false, Optional.empty()));
 		assertThrows(IllegalArgumentException.class, () -> new OreTraits(5, HarvestLevel.STONE, new OreDrop.Itself(), false));
-		assertThrows(IllegalArgumentException.class, () -> new MaterialDefinition(0, 3, HarvestLevel.STONE, 10));
+		assertThrows(IllegalArgumentException.class, () -> SampleMaterials.withTexture(3));
 	}
 
 	@Test
@@ -60,7 +62,7 @@ class OreSetDefinitionTest
 	@Test
 	void requiresAMaterialOnlyForMaterialSets()
 	{
-		assertThrows(IllegalArgumentException.class, () -> simpleSet("xyzium", Optional.of(new MaterialDefinition(1, 1, HarvestLevel.IRON, 10))));
+		assertThrows(IllegalArgumentException.class, () -> simpleSet("xyzium", Optional.of(SampleMaterials.ironLike())));
 	}
 
 	@Test

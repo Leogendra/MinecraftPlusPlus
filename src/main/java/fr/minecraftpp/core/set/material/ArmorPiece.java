@@ -1,4 +1,4 @@
-package fr.minecraftpp.core.set;
+package fr.minecraftpp.core.set.material;
 
 /**
  * The four armor pieces, in the 1.12 order of the armor statistics arrays.

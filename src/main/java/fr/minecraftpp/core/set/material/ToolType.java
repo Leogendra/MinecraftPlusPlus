@@ -1,4 +1,4 @@
-package fr.minecraftpp.core.ore;
+package fr.minecraftpp.core.set.material;
 
 public enum ToolType
 {

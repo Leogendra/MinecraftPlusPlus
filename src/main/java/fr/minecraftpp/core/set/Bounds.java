@@ -3,13 +3,13 @@ package fr.minecraftpp.core.set;
 /**
  * Validation of the numeric values of the set definitions.
  */
-final class Bounds
+public final class Bounds
 {
 	private Bounds()
 	{
 	}
 
-	static void check(String name, double value, double minimum, double maximum)
+	public static void check(String name, double value, double minimum, double maximum)
 	{
 		if (value < minimum || value > maximum)
 		{

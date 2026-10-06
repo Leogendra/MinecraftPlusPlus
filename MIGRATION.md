@@ -132,7 +132,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 2.3 | `Refactor: move the name generator to the core package` | 1 | | 8 | | 9 | M | [x] |
 | 2.4 | `Refactor: move ore value types and distributions to the core package` | 5 | | 13 | | 18 | L | [x] |
 | 2.5 | `Refactor: describe ore sets as immutable definitions` | 10 | | | | 10 | M | [x] |
-| 2.6 | `Refactor: compute tool and armor stats in the core` | 2 | 1 | 2 | 5 | 10 | M | [ ] |
+| 2.6 | `Refactor: compute tool and armor stats in the core` | 2 | 1 | 2 | 5 | 10 | M | [x] |
 | 2.7 | `Refactor: generate the seven ore sets as definitions` | 7 | | 6 | 2 | 15 | M | [ ] |
 | 2.8 | `Refactor: express variants and recipes as core definitions` | 8 | | 1 | 20 | 29 | L | [ ] |
 | 2.9 | `Refactor: parse seeds and compare world seeds in the core` | 3 | | 1 | | 4 | S | [ ] |
@@ -267,6 +267,10 @@ Le code Java pur est déplacé dans `core`. La logique couplée aux classes Mine
   - `IToolMaterial` et `IArmorMaterial` sont supprimées.
 - **Fichiers** : R 2 (`ToolSet` devient `ToolStatsGenerator`, `ArmorSet` devient `ArmorStatsGenerator`) ; D 5 (`MetalToolSet`, `MetalArmorSet` et `DynamicMaterial`, fusionnés dans les générateurs, plus les deux interfaces) ; M `MaterialDefinition` ; C `ToolStatsGeneratorTest`, `ArmorStatsGeneratorTest`.
 - **Tests** : statistiques identiques à celles calculées par la 1.12 pour un tirage donné.
+- **Réalisé** :
+  - tout ce qui concerne le matériau est regroupé dans `core/set/material` : `MaterialDefinition`, `ToolStats`, `ArmorStats`, `ToolType` (venu de `core/ore`), `ArmorPiece` et les deux générateurs ;
+  - `ToolStats` garde les bonus de la 1.12 et calcule l'attaque finale de chaque outil comme les classes d'outils 1.12 (épée à −2,4 de vitesse, houe à 0 de dégâts et −4 de vitesse) ;
+  - les tests comparent les générateurs aux formules 1.12 recopiées telles quelles.
 
 #### 2.7 `Refactor: generate the seven ore sets as definitions`
 - **Contenu** :
