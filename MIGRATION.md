@@ -124,10 +124,10 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 
 | # | Commit | C | M | R | D | Total | Taille | Statut |
 |---|---|---:|---:|---:|---:|---:|---|---|
-| 1.1 | `Build: add Fabric Loom build for Minecraft 26.1.2` | 8 | 2 | | | 10 | M | [ ] |
-| 1.2 | `Feat: bootstrap an empty Fabric mod with smoke tests` | 8 | 2 | | | 10 | M | [ ] |
-| 1.3 | `Build: run build and tests in GitHub Actions` | 1 | | | | 1 | S | [ ] |
-| 2.1 | `Test: capture 1.12 generator outputs as golden fixtures` | 4 | | | | 4 | S | [ ] |
+| 1.1 | `Build: add Fabric Loom build for Minecraft 26.1.2` | 8 | 2 | | | 10 | M | [x] |
+| 1.2 | `Feat: bootstrap an empty Fabric mod with smoke tests` | 8 | 2 | | | 10 | M | [x] |
+| 1.3 | `Build: run build and tests in GitHub Actions` | 1 | | | | 1 | S | [x] |
+| 2.1 | `Test: capture 1.12 generator outputs as golden fixtures` | 4 | | | | 4 | S | [x] |
 | 2.2 | `Refactor: move the constraint solver to the core package` | 3 | 1 | 13 | | 17 | L | [ ] |
 | 2.3 | `Refactor: move the name generator to the core package` | 1 | | 8 | | 9 | M | [ ] |
 | 2.4 | `Refactor: move ore value types and distributions to the core package` | 5 | | 13 | | 18 | L | [ ] |
@@ -208,19 +208,22 @@ Le code Java pur est déplacé dans `core`. La logique couplée aux classes Mine
   - pour 3 seeds, sortie complète de `SetManager.getInfoString()` de la 1.12 (nom, rareté, attributs, répartition, niveau de récolte), complétée par les couleurs et les identifiants de textures ;
   - capture selon D12, avant toute modification de l'ancien code ;
   - un README qui explique comment les fichiers ont été obtenus et pourquoi ils ne doivent pas être modifiés à la main.
-- **Fichiers** : C `src/test/resources/golden/seed-*.txt` (3), `src/test/resources/golden/README.md`.
+- **Fichiers** : C `src/test/resources/golden/seed-*.txt` (4), `src/test/resources/golden/README.md`.
 - **Tests** : données de référence, utilisées par les commits 2.3 et 2.7.
+- **Réalisé** : 4 seeds au lieu de 3 (26, 30, 42, −7046029254386353131), choisies parmi 43 seeds capturées parce qu'ensemble elles couvrent tous les types de sets et tous les traits. Chaque fichier contient le texte de `/mppinfo`, le détail de chaque valeur générée et les noms affichés. La capture tourne sur un Java 8 : le solveur 1.12 évalue ses contraintes avec le moteur JavaScript Nashorn, supprimé depuis Java 15 (voir 2.2).
 
 #### 2.2 `Refactor: move the constraint solver to the core package`
 - **Contenu** :
   - `randomizer/backtrack/**` devient `core/solver/**`, paquet `constraints` renommé `constraint` ;
   - `CSP` perd son seul import vanilla et son effet de bord global : il ne remplace plus `System.err` ; c'est la source des messages parasites qui est supprimée ;
-  - ajout de JUnit et d'ArchUnit (D2).
-- **Fichiers** : R 13 ; M `build.gradle` ; C `BacktrackTest`, `ConstraintTest`, `CoreArchitectureTest`.
+  - `Evaluator` évaluait les contraintes en intension avec le moteur JavaScript Nashorn, absent de Java 25 : il est remplacé par `BooleanExpression`, un évaluateur limité à la grammaire produite par `Pretreatment` (entiers, `==`, `&&`, `||`, parenthèses) ;
+  - ajout de JUnit (D2) ; la règle d'architecture est un test JUnit qui lit les imports.
+- **Fichiers** : R 12 ; D `Evaluator` ; M `build.gradle` ; C `BooleanExpression`, `BooleanExpressionTest`, `BacktrackTest`, `ConstraintTest`, `CoreArchitectureTest`.
 - **Tests** :
   - la solution satisfait toutes les contraintes, pour 100 seeds ;
   - même seed, même solution ;
-  - règle ArchUnit : `fr.minecraftpp.core..` ne dépend ni de `net.minecraft..` ni de `net.fabricmc..`.
+  - évaluation des expressions produites par `Pretreatment` ;
+  - règle d'architecture : aucune source de `fr.minecraftpp.core` n'importe `net.minecraft` ni `net.fabricmc`.
 
 #### 2.3 `Refactor: move the name generator to the core package`
 - **Contenu** :
