@@ -131,7 +131,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 2.2 | `Refactor: move the constraint solver to the core package` | 3 | 1 | 13 | | 17 | L | [x] |
 | 2.3 | `Refactor: move the name generator to the core package` | 1 | | 8 | | 9 | M | [x] |
 | 2.4 | `Refactor: move ore value types and distributions to the core package` | 5 | | 13 | | 18 | L | [x] |
-| 2.5 | `Refactor: describe ore sets as immutable definitions` | 10 | | | | 10 | M | [ ] |
+| 2.5 | `Refactor: describe ore sets as immutable definitions` | 10 | | | | 10 | M | [x] |
 | 2.6 | `Refactor: compute tool and armor stats in the core` | 2 | 1 | 2 | 5 | 10 | M | [ ] |
 | 2.7 | `Refactor: generate the seven ore sets as definitions` | 7 | | 6 | 2 | 15 | M | [ ] |
 | 2.8 | `Refactor: express variants and recipes as core definitions` | 8 | | 1 | 20 | 29 | L | [ ] |
@@ -255,6 +255,10 @@ Le code Java pur est déplacé dans `core`. La logique couplée aux classes Mine
   - les valeurs sont validées à la construction, par exemple une lumière comprise entre 0 et 15.
 - **Fichiers** : C 8 + `OreSetDefinitionTest`, `ContentIdsTest`.
 - **Tests** : les valeurs hors bornes sont refusées ; les identifiants restent stables et en minuscules.
+- **Réalisé** :
+  - records `OreSetDefinition`, `ItemTraits`, `StorageBlockTraits`, `OreTraits`, `OreDrop` (le minerai se récupère lui-même, ou donne des objets et de l'expérience), `OreGeneration`, `FoodDefinition`, `MaterialDefinition`, avec les énumérations `SetType`, `VanillaRole` et `ArmorPiece` ;
+  - catalogue des traits (D13) dans `core/trait` : `Trait` fixe l'ordre des tirages et les chances de la 1.12, `TraitCatalog` est la seule source de ces chances. Les paramètres de chaque trait restent tirés avec les formules de la 1.12 jusqu'à la configuration JSON (section 9) ;
+  - tests : `OreSetDefinitionTest`, `ContentIdsTest`, `TraitCatalogTest`.
 
 #### 2.6 `Refactor: compute tool and armor stats in the core`
 - **Contenu** :
