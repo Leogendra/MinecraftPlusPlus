@@ -1,0 +1,5 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [ "minecraft:netherite_scrap", "minecraft:netherite_scrap", "minecraft:gold_ingot", "minecraft:gold_ingot" ],
+	"result": { "id": "minecraft:netherite_ingot" }
+}

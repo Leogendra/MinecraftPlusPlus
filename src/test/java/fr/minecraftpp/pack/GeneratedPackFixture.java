@@ -18,7 +18,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.IoSupplier;
 
 /**
- * Writes the complete generated pack of a seed and reads its files as JSON, next to the reference files of src/test/resources/pack.
+ * Writes the complete generated pack of a seed, over the sample vanilla files, and reads its files as JSON, next to the reference files of src/test/resources/pack.
  */
 public final class GeneratedPackFixture
 {
@@ -28,7 +28,7 @@ public final class GeneratedPackFixture
 
 	public static GeneratedPackContents write(long seed)
 	{
-		return GeneratedPackContents.write(TestCatalogs.generate(seed), GeneratedPackWriters.all());
+		return GeneratedPackContents.write(TestCatalogs.generate(seed), GeneratedPackWriters.all(new SampleVanillaData()));
 	}
 
 	/**

@@ -149,7 +149,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 4.3 | `Feat: generate recipes, loot tables and tags` | 12 | 7 | | | 19 | L | [x] |
 | 4.4 | `Feat: generate ore features and replace vanilla ores` | 8 | 4 | | 1 | 13 | M | [x] |
 | 4.4b | `Feat: add copper as a generated ore role` | 3 | 15 | | | 18 | L | [x] |
-| 4.5 | `Feat: make vanilla recipes accept generated variants` | 4 | 1 | | | 5 | S | [ ] |
+| 4.5 | `Feat: make vanilla recipes accept generated variants` | 16 | 4 | | | 20 | L | [x] |
 | 4.6 | `Feat: replace vanilla loot with generated variants` | 2 | 1 | | | 3 | S | [ ] |
 | 4.7 | `Feat: pay villagers with the generated currency` | 3 | 1 | | | 4 | S | [ ] |
 | 4.8 | `Feat: generate translations and walk damage types` | 4 | 2 | | 1 | 7 | M | [ ] |
@@ -500,6 +500,15 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
   - `VanillaRecipeRewriter` remplace dans les ingrédients `iron_ingot`, `gold_ingot`, `diamond`, `coal`… par le tag de variantes correspondant.
 - **Fichiers** : C 2 + `VanillaRecipeRewriterTest`, `VariantCraftingGameTest` ; M `MinecraftPlusPlus`.
 - **Tests** : réécriture d'un JSON d'exemple ; fabriquer un seau avec un lingot généré.
+- **Réalisé** :
+  - `VanillaData` (contrat) et `VanillaPackData` (lecture du pack vanilla que charge le serveur, via `ServerPacksSource.createVanillaPackSource()`). Les tests utilisent `SampleVanillaData` : des fichiers d'exemple écrits à la main au format vanilla, pour ne pas copier de fichier Mojang dans le dépôt.
+  - `VariantTagWriter` écrit les tags de variantes, reportés de 4.3 : `minecraftpp:variants/iron_ingot` contient le lingot de fer vanilla et ses variantes. Ces tags servent aussi aux étapes 4.6 à 5.2.
+  - `VanillaRecipeRewriter` remplace une recette vanilla quand ses ingrédients ont des variantes et que son résultat n'en a pas. Ce second critère reprend la règle de l'ancien `IronNuggetRecipe` : sinon, neuf pépites générées donneraient à la fois le lingot généré et le lingot vanilla. Dans `VariantIngredients` :
+    - un objet devient son tag de variantes ;
+    - une liste d'objets reçoit les variantes, car une liste ne peut pas contenir de tag ;
+    - un tag vanilla qui contient un objet à variantes (`#minecraft:coals` du feu de camp) devient un tag `minecraftpp:variants/tag/coals`, qui contient le tag vanilla et ces variantes. Le tag vanilla lui-même n'est pas modifié : il sert ailleurs (réparation, matériaux d'ornement…).
+  - **Bogue trouvé et corrigé** : la liste `ingredients` d'une recette sans forme est une liste d'ingrédients, pas une liste d'objets. Les variantes y étaient ajoutées comme ingrédients en plus. Le serveur refusait alors la recette du lingot de netherite (12 ingrédients pour 9 cases), sans faire échouer le build : seul le journal le signalait. Deux tests l'empêchent désormais de revenir : un cas JUnit, et un GameTest qui vérifie que le serveur charge chaque recette réécrite.
+  - 7 tests JUnit (seed 42) et 3 GameTest : seau avec le lingot généré du fer, torches avec le charbon généré, chargement de toutes les recettes réécrites.
 
 #### 4.6 `Feat: replace vanilla loot with generated variants`
 - **Contenu** : `VanillaLootTableRewriter` remplace chaque objet vanilla ayant des variantes par un tirage équiprobable entre ses variantes. C'est l'équivalent JSON du patch `LootTable` de la 1.12.
@@ -668,7 +677,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 4.4b faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.4b : 109 tests JUnit et 24 GameTest au vert. **Prochaine étape : 4.5**, recettes vanilla acceptant les variantes.
+**État** : commits 1.1 à 4.5 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.5 : 116 tests JUnit et 27 GameTest au vert. **Prochaine étape : 4.6**, loot vanilla remplacé par les variantes.
 
 **Environnement** :
 
@@ -681,6 +690,5 @@ Questions à trancher au moment de planifier cette phase :
 
 **Points à reporter dans les commits suivants** :
 
-- 4.5 : écrire les tags de variantes (reportés de 4.3) ; ne pas réécrire une recette vanilla dont le résultat a des variantes (ancien `IronNuggetRecipe`) ;
 - 4.8 : remplacer `hotFloor()` dans `ContentRegistrar.registerBlocks` par le type de dégâts généré. Traduire aussi les tags d'objets générés (`tag.item.minecraftpp.<nom>_repair_materials`) : Fabric signale en développement les tags sans traduction ;
 - 4.9 : l'equipment asset de chaque matériau est `minecraftpp:<nom>` (`MaterialFactory.equipmentAsset`).
