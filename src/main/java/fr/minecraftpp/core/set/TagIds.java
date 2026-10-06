@@ -24,4 +24,29 @@ public final class TagIds
 	{
 		return "enchanting_currency";
 	}
+
+	/**
+	 * The tag of a vanilla item or block and its generated variants: {@code minecraftpp:variants/iron_ingot} for {@code minecraft:iron_ingot}. The rewritten vanilla data and the mixins accept this tag wherever the vanilla object was accepted.
+	 *
+	 * @param vanillaId a complete vanilla identifier, such as {@code minecraft:iron_ingot}
+	 */
+	public static String variantsOf(String vanillaId)
+	{
+		return ContentIds.full("variants/" + pathOf(vanillaId));
+	}
+
+	/**
+	 * The tag of a vanilla item tag and the variants of its items: {@code minecraftpp:variants/tag/coals} for {@code minecraft:coals}.
+	 *
+	 * @param vanillaTagId a complete vanilla tag identifier without {@code #}
+	 */
+	public static String variantsOfTag(String vanillaTagId)
+	{
+		return ContentIds.full("variants/tag/" + pathOf(vanillaTagId));
+	}
+
+	private static String pathOf(String identifier)
+	{
+		return identifier.substring(identifier.indexOf(':') + 1);
+	}
 }

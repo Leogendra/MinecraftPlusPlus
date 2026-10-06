@@ -20,7 +20,8 @@
 			"fr.minecraftpp.gametest.VariantCraftingGameTest",
 			"fr.minecraftpp.gametest.LootVariantGameTest",
 			"fr.minecraftpp.gametest.VillagerTradeGameTest",
-			"fr.minecraftpp.gametest.EnchantingCurrencyGameTest"
+			"fr.minecraftpp.gametest.EnchantingCurrencyGameTest",
+			"fr.minecraftpp.gametest.VariantInteractionsGameTest"
 		]
 	},
 	"depends": {

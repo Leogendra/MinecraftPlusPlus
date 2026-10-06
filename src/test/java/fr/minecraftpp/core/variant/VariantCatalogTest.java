@@ -26,6 +26,23 @@ class VariantCatalogTest
 		assertEquals(List.of("minecraftpp:kal_chestplate"), VARIANTS.variantsOf("minecraft:iron_chestplate"));
 	}
 
+	/**
+	 * The iron golem pattern reads the block variants; the items of a block are not blocks.
+	 */
+	@Test
+	void onlyStorageBlocksAreBlockVariants()
+	{
+		assertEquals(List.of("minecraftpp:kal_block"), VARIANTS.blockVariantsOf("minecraft:iron_block"));
+		assertFalse(VARIANTS.vanillaBlocks().contains("minecraft:iron_ingot"));
+	}
+
+	@Test
+	void copperSetsReplaceTheVanillaCopper()
+	{
+		assertEquals(List.of("minecraftpp:dium"), VARIANTS.variantsOf("minecraft:copper_ingot"));
+		assertEquals(List.of("minecraftpp:dium_block"), VARIANTS.blockVariantsOf("minecraft:copper_block"));
+	}
+
 	@Test
 	void onlyMetalSetsReplaceNuggets()
 	{

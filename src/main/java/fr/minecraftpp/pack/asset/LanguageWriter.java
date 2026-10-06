@@ -19,7 +19,6 @@ import fr.minecraftpp.core.variant.VariantCatalog;
 import fr.minecraftpp.pack.GeneratedFile;
 import fr.minecraftpp.pack.GeneratedResourceWriter;
 import fr.minecraftpp.pack.data.DamageTypeWriter;
-import fr.minecraftpp.pack.vanilla.VariantTagIds;
 import net.minecraft.resources.Identifier;
 
 /**
@@ -93,7 +92,7 @@ public final class LanguageWriter implements GeneratedResourceWriter
 
 		for (String vanillaItem : VariantCatalog.of(catalog).vanillaItems())
 		{
-			translations.put(itemTagKey(VariantTagIds.ofItem(vanillaItem)), titleCase(Identifier.parse(vanillaItem).getPath()) + " Variants");
+			translations.put(itemTagKey(TagIds.variantsOf(vanillaItem)), titleCase(Identifier.parse(vanillaItem).getPath()) + " Variants");
 		}
 	}
 

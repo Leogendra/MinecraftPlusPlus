@@ -155,7 +155,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 4.8 | `Feat: generate translations and walk damage types` | 5 | 9 | | 1 | 15 | M | [x] |
 | 4.9 | `Feat: generate tinted equipment assets for armors` | 3 | 2 | 6 | | 11 | M | [x] |
 | 5.1 | `Feat: use the generated enchanting currency in the enchanting table` | 4 | 5 | | 1 | 10 | M | [x] |
-| 5.2 | `Feat: accept generated variants in golem and piglin interactions` | 4 | 2 | | | 6 | M | [ ] |
+| 5.2 | `Feat: accept generated variants in golem and piglin interactions` | 4 | 10 | | 1 | 15 | M | [x] |
 | 6.1 | `Feat: store the Minecraft++ seed in new worlds` | 4 | 1 | | | 5 | S | [ ] |
 | 6.2 | `Feat: refuse to open worlds created with another seed` | 2 | 2 | | | 4 | S | [ ] |
 | 6.3 | `Feat: show the Minecraft++ seed status in the world list` | 2 | 2 | | | 4 | S | [ ] |
@@ -578,6 +578,11 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
   - `CarvedPumpkinBlockMixin` : patron du golem avec les blocs de variantes de fer.
 - **Fichiers** : C 3 + `VariantInteractionsGameTest` ; M `minecraftpp.mixins.json`, `TagWriter`.
 - **Tests** : réparation, troc et invocation du golem avec une variante.
+- **Réalisé** :
+  - `IronGolemMixin` (`mobInteract`) et `PiglinAiMixin` (`isBarterCurrency`, qui sert au ramassage, à l'échange avec un joueur et au troc) acceptent, en plus de l'objet vanilla, les tags de variantes `variants/iron_ingot` et `variants/gold_ingot`.
+  - `CarvedPumpkinBlockMixin` élargit le symbole `#` (bloc de fer) des deux patrons du golem au tag de blocs `variants/iron_block`. Pour cela, `VariantCatalog` distingue les variantes qui sont des blocs (`blockVariantsOf`), et `VariantTagWriter` écrit aussi des tags de blocs.
+  - Refactorisation : la règle de nommage des tags de variantes passe de `pack/vanilla/VariantTagIds` à `core/set/TagIds` (`variantsOf`, `variantsOfTag`), pour que `content/ModTags` la partage sans dépendance circulaire entre `content` et `pack`.
+  - 2 tests JUnit (variantes de blocs, variantes du cuivre) et 3 GameTest : réparation du golem avec le lingot généré du fer, troc d'un piglin avec l'or généré, golem construit avec des blocs générés du fer.
 
 ### Phase 6 — Seed Minecraft++ et sauvegardes
 
@@ -702,7 +707,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 5.1 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 4 sont terminées, ainsi que 5.1 : 125 tests JUnit et 33 GameTest au vert. **Prochaine étape : 5.2**, variantes acceptées par le golem de fer et les piglins.
+**État** : commits 1.1 à 5.2 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 5 sont terminées : 127 tests JUnit et 36 GameTest au vert. **Prochaine étape : 6.1**, seed Minecraft++ enregistrée dans les nouveaux mondes.
 
 **Environnement** :
 
@@ -715,4 +720,4 @@ Questions à trancher au moment de planifier cette phase :
 
 **Points à reporter dans les commits suivants** :
 
-- 5.2 : les tags de variantes `minecraftpp:variants/<objet vanilla>` existent déjà (`VariantTagIds`) ; les mixins peuvent s'en servir au lieu d'un nouveau tag.
+- Phase 6 : les tests prévus « (client) » ne sont pas automatisés (D9) ; la logique est testée en JUnit, l'affichage est à vérifier à la main.

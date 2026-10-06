@@ -10,6 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+import fr.minecraftpp.core.set.TagIds;
 import fr.minecraftpp.core.variant.VariantCatalog;
 
 /**
@@ -152,11 +153,11 @@ public final class VariantIngredients
 		if (identifier.startsWith("#") && !this.variantsOfTag(identifier.substring(1)).isEmpty())
 		{
 			this.rewrittenTags.add(identifier.substring(1));
-			return "#" + VariantTagIds.ofTag(identifier.substring(1));
+			return "#" + TagIds.variantsOfTag(identifier.substring(1));
 		}
 		else if (this.variants.hasVariants(identifier))
 		{
-			return "#" + VariantTagIds.ofItem(identifier);
+			return "#" + TagIds.variantsOf(identifier);
 		}
 		else
 		{

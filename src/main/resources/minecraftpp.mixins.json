@@ -4,8 +4,11 @@
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
 		"BuiltInPackSourceMixin",
+		"CarvedPumpkinBlockMixin",
 		"EnchantingCurrencySlotMixin",
-		"EnchantmentMenuMixin"
+		"EnchantmentMenuMixin",
+		"IronGolemMixin",
+		"PiglinAiMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

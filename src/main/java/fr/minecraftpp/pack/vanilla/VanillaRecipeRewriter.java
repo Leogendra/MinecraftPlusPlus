@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import fr.minecraftpp.core.set.OreCatalog;
+import fr.minecraftpp.core.set.TagIds;
 import fr.minecraftpp.core.variant.VariantCatalog;
 import fr.minecraftpp.pack.GeneratedFile;
 import fr.minecraftpp.pack.GeneratedResourceWriter;
@@ -89,6 +90,6 @@ public final class VanillaRecipeRewriter implements GeneratedResourceWriter
 		values.add("#" + vanillaTag);
 		values.addAll(ingredients.variantsOfTag(vanillaTag));
 
-		return new TagJson(values).toFile(TagKey.create(Registries.ITEM, Identifier.parse(VariantTagIds.ofTag(vanillaTag))));
+		return new TagJson(values).toFile(TagKey.create(Registries.ITEM, Identifier.parse(TagIds.variantsOfTag(vanillaTag))));
 	}
 }

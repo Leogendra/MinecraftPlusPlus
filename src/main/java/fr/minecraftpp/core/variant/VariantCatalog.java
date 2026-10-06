@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import fr.minecraftpp.core.set.ContentIds;
+import fr.minecraftpp.core.set.ContentSlot;
 import fr.minecraftpp.core.set.OreCatalog;
 import fr.minecraftpp.core.set.OreSetDefinition;
 import fr.minecraftpp.core.set.VanillaRole;
@@ -20,15 +21,18 @@ import fr.minecraftpp.core.set.VanillaRole;
 public class VariantCatalog
 {
 	private final Map<String, List<String>> variants;
+	private final Map<String, List<String>> blockVariants;
 
-	private VariantCatalog(Map<String, List<String>> variants)
+	private VariantCatalog(Map<String, List<String>> variants, Map<String, List<String>> blockVariants)
 	{
 		this.variants = variants;
+		this.blockVariants = blockVariants;
 	}
 
 	public static VariantCatalog of(OreCatalog catalog)
 	{
 		Map<String, List<String>> variants = new LinkedHashMap<>();
+		Map<String, List<String>> blockVariants = new LinkedHashMap<>();
 
 		for (OreSetDefinition set : catalog.sets())
 		{
@@ -36,13 +40,18 @@ public class VariantCatalog
 			{
 				for (VanillaVariant variant : VariantRules.variantsOf(set.type(), role))
 				{
-					variants.computeIfAbsent(variant.vanillaItemId(), vanillaItemId -> new ArrayList<>()).add(ContentIds.full(variant.slot().idFor(set)));
+					String generatedId = ContentIds.full(variant.slot().idFor(set));
+					variants.computeIfAbsent(variant.vanillaItemId(), vanillaItemId -> new ArrayList<>()).add(generatedId);
+
+					if (variant.slot() instanceof ContentSlot.StorageBlock)
+					{
+						blockVariants.computeIfAbsent(variant.vanillaItemId(), vanillaBlockId -> new ArrayList<>()).add(generatedId);
+					}
 				}
 			}
 		}
 
-		variants.replaceAll((vanillaItemId, generated) -> List.copyOf(generated));
-		return new VariantCatalog(Collections.unmodifiableMap(variants));
+		return new VariantCatalog(immutable(variants), immutable(blockVariants));
 	}
 
 	/**
@@ -64,5 +73,24 @@ public class VariantCatalog
 	public Set<String> vanillaItems()
 	{
 		return this.variants.keySet();
+	}
+
+	/**
+	 * The vanilla blocks whose block item has variants that are blocks too, the storage blocks: the iron block and the generated iron blocks. A block and its item share their identifier.
+	 */
+	public Set<String> vanillaBlocks()
+	{
+		return this.blockVariants.keySet();
+	}
+
+	public List<String> blockVariantsOf(String vanillaBlockId)
+	{
+		return this.blockVariants.getOrDefault(vanillaBlockId, List.of());
+	}
+
+	private static Map<String, List<String>> immutable(Map<String, List<String>> variants)
+	{
+		variants.replaceAll((vanillaId, generated) -> List.copyOf(generated));
+		return Collections.unmodifiableMap(variants);
 	}
 }
