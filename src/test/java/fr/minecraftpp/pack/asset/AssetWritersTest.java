@@ -19,7 +19,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 
 /**
- * Seed 42: kal is a material set with block texture 2, ore texture 4 and color {R: 200, G: 11, B: 242}.
+ * Seed 42: kal is a material set with block texture 2, ore texture 4, armor texture 1 and color {R: 200, G: 11, B: 242}.
  */
 class AssetWritersTest
 {
@@ -28,7 +28,7 @@ class AssetWritersTest
 	@Test
 	void filesMatchTheReferences()
 	{
-		for (String path : List.of("blockstates/kal_block.json", "models/block/deepslate_kal_ore.json", "models/item/kal_pickaxe.json", "items/kal_pickaxe.json", "items/kal_ore.json"))
+		for (String path : List.of("blockstates/kal_block.json", "models/block/deepslate_kal_ore.json", "models/item/kal_pickaxe.json", "items/kal_pickaxe.json", "items/kal_ore.json", "equipment/kal.json"))
 		{
 			Identifier location = Identifier.fromNamespaceAndPath(ContentIds.NAMESPACE, path);
 
@@ -96,6 +96,10 @@ class AssetWritersTest
 		if (location.getPath().startsWith("models/"))
 		{
 			return json.getAsJsonObject().getAsJsonObject("textures").entrySet().stream().map(texture -> texture.getValue().getAsString()).filter(texture -> texture.startsWith(ContentIds.NAMESPACE + ":")).toList();
+		}
+		else if (location.getPath().startsWith("equipment/"))
+		{
+			return json.getAsJsonObject().getAsJsonObject("layers").entrySet().stream().flatMap(layerType -> layerType.getValue().getAsJsonArray().asList().stream().map(layer -> Identifier.parse(layer.getAsJsonObject().get("texture").getAsString()).withPrefix("entity/equipment/" + layerType.getKey() + "/").toString())).toList();
 		}
 		else
 		{

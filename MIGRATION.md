@@ -153,7 +153,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 4.6 | `Feat: replace vanilla loot with generated variants` | 5 | 3 | | | 8 | M | [x] |
 | 4.7 | `Feat: pay villagers with the generated currency` | 6 | 3 | | | 9 | M | [x] |
 | 4.8 | `Feat: generate translations and walk damage types` | 5 | 9 | | 1 | 15 | M | [x] |
-| 4.9 | `Feat: generate tinted equipment assets for armors` | 3 | 2 | 6 | | 11 | M | [ ] |
+| 4.9 | `Feat: generate tinted equipment assets for armors` | 3 | 2 | 6 | | 11 | M | [x] |
 | 5.1 | `Feat: use the generated enchanting currency in the enchanting table` | 2 | 2 | 1 | | 5 | S | [ ] |
 | 5.2 | `Feat: accept generated variants in golem and piglin interactions` | 4 | 2 | | | 6 | M | [ ] |
 | 6.1 | `Feat: store the Minecraft++ seed in new worlds` | 4 | 1 | | | 5 | S | [ ] |
@@ -551,6 +551,11 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
   - les 6 textures d'armure sont déplacées vers `textures/entity/equipment/humanoid[_leggings]/`.
 - **Fichiers** : C `EquipmentAssetWriter`, `EquipmentAssetWriterTest`, 1 JSON de référence ; M `ArmorItemFactory`, `MinecraftPlusPlus` ; R 6.
 - **Tests** : JSON identiques aux références ; armure visible et teintée en jeu (vérification manuelle ou client selon D9).
+- **Réalisé** :
+  - `EquipmentAssetWriter` écrit `assets/minecraftpp/equipment/<nom>.json`, l'asset que nomme déjà le matériau d'armure (`MaterialFactory.equipmentAsset`). Il contient une couche `dyeable`, dont la couleur `color_when_undyed` est celle du set, et pour la texture 2 une surimpression non teintée, comme en 1.12. `ArmorItemFactory` n'a pas eu à changer.
+  - 6 textures déplacées vers `textures/entity/equipment/humanoid[_leggings]/generic_N[_overlay].png`.
+  - Seules les couches adultes existent : les textures de la 1.12 n'ont pas de version pour les bébés (zombies bébés équipés), qui portent donc l'armure sans la dessiner.
+  - Le test JUnit compare l'asset de kal à sa référence. Le test d'existence vérifie aussi, pour les 4 seeds, les textures citées par les equipment assets, surimpressions comprises (seeds 26 et 30). **À vérifier en jeu** : armure visible et teintée.
 
 ### Phase 5 — Règles du jeu codées en dur (Mixins)
 
@@ -692,7 +697,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 4.8 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.8 : 125 tests JUnit et 31 GameTest au vert. **Prochaine étape : 4.9**, equipment assets des armures.
+**État** : commits 1.1 à 4.9 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 4 sont terminées : 125 tests JUnit et 31 GameTest au vert. **Prochaine étape : 5.1**, monnaie d'enchantement dans la table d'enchantement.
 
 **Environnement** :
 
@@ -701,8 +706,8 @@ Questions à trancher au moment de planifier cette phase :
 - les sources de Fabric API se téléchargent depuis `maven.fabricmc.net` (artefacts `-sources.jar`) ;
 - les GameTest tournent avec la seed −7046029254386353131 (`writeGameTestSeed` dans `build.gradle`) ; leurs sets sont décrits dans `GameTestSets`.
 
-**Pack généré (4.1)** : un générateur rend des `GeneratedFile` (type de pack, emplacement sous `assets/` ou `data/`, texte JSON écrit par `PackJson` depuis un record). Un tag s'écrit avec `TagJson.toFile(TagKey)`. Les fichiers générés écrasent ceux des packs placés en dessous, vanilla compris. Les textures restent des fichiers statiques du jar, servis par le pack de mod de Fabric.
+**Pack généré (phase 4)** : chaque `GeneratedResourceWriter` rend des `GeneratedFile` (type de pack, emplacement sous `assets/` ou `data/`, texte JSON écrit par `PackJson` depuis un record), et la liste des générateurs est dans `GeneratedPackWriters`. Un tag s'écrit avec `TagJson.toFile(TagKey)`. Les fichiers générés écrasent ceux des packs placés en dessous, vanilla compris. Les générateurs qui réécrivent des fichiers vanilla les lisent par `VanillaData` (`VanillaPackData` en jeu, `SampleVanillaData` dans les tests). Les textures restent des fichiers statiques du jar, servis par le pack de mod de Fabric.
 
 **Points à reporter dans les commits suivants** :
 
-- 4.9 : l'equipment asset de chaque matériau est `minecraftpp:<nom>` (`MaterialFactory.equipmentAsset`).
+- 5.1 et 5.2 : les tags de variantes `minecraftpp:variants/<objet vanilla>` existent déjà (`VariantTagIds`) ; les mixins peuvent s'en servir au lieu d'un nouveau tag.
