@@ -1,0 +1,4 @@
+{
+	"gives": { "id": "minecraft:iron_boots" },
+	"wants": { "count": 4.0, "id": "minecraft:emerald" }
+}

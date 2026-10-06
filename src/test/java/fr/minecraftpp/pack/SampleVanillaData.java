@@ -20,7 +20,7 @@ import net.minecraft.resources.Identifier;
  */
 public final class SampleVanillaData implements VanillaData
 {
-	private static final List<String> FILES = List.of("recipe/bucket.json", "recipe/torch.json", "recipe/iron_block.json", "recipe/campfire.json", "recipe/stick.json", "recipe/netherite_ingot.json", "tags/item/coals.json", "loot_table/entities/iron_golem.json", "loot_table/blocks/iron_block.json");
+	private static final List<String> FILES = List.of("recipe/bucket.json", "recipe/torch.json", "recipe/iron_block.json", "recipe/campfire.json", "recipe/stick.json", "recipe/netherite_ingot.json", "tags/item/coals.json", "loot_table/entities/iron_golem.json", "loot_table/blocks/iron_block.json", "villager_trade/smith/2/iron_ingot_emerald.json", "villager_trade/armorer/1/iron_boots.json", "villager_trade/farmer/1/wheat_bread.json");
 
 	@Override
 	public Map<Identifier, JsonElement> files(String directory)

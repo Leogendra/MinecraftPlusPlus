@@ -1,0 +1,4 @@
+{
+	"gives": { "count": 6, "id": "minecraft:bread" },
+	"wants": { "id": "minecraft:wheat" }
+}

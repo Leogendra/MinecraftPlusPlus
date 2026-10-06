@@ -151,7 +151,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 4.4b | `Feat: add copper as a generated ore role` | 3 | 15 | | | 18 | L | [x] |
 | 4.5 | `Feat: make vanilla recipes accept generated variants` | 16 | 4 | | | 20 | L | [x] |
 | 4.6 | `Feat: replace vanilla loot with generated variants` | 5 | 3 | | | 8 | M | [x] |
-| 4.7 | `Feat: pay villagers with the generated currency` | 3 | 1 | | | 4 | S | [ ] |
+| 4.7 | `Feat: pay villagers with the generated currency` | 6 | 3 | | | 9 | M | [x] |
 | 4.8 | `Feat: generate translations and walk damage types` | 4 | 2 | | 1 | 7 | M | [ ] |
 | 4.9 | `Feat: generate tinted equipment assets for armors` | 3 | 2 | 6 | | 11 | M | [ ] |
 | 5.1 | `Feat: use the generated enchanting currency in the enchanting table` | 2 | 2 | 1 | | 5 | S | [ ] |
@@ -524,6 +524,10 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
 - **Contenu** : `VillagerTradeRewriter` remplace `minecraft:emerald` par la monnaie générée dans les 387 fichiers `villager_trade`, et les objets demandés par leurs variantes.
 - **Fichiers** : C `VillagerTradeRewriter`, `VillagerTradeRewriterTest`, `VillagerTradeGameTest` ; M `MinecraftPlusPlus`.
 - **Tests** : réécriture d'un échange d'exemple ; un villageois propose la monnaie générée.
+- **Réalisé** :
+  - `VillagerTradeRewriter` remplace l'objet de `wants`, `additional_wants` et `gives` : l'émeraude devient l'objet principal du set monnaie, un objet à variantes devient sa variante. Un échange ne nomme qu'un objet, jamais un tag. Comme chaque rôle va à un seul set, un objet vanilla a une seule variante : le remplacement est déterministe, sans tirage. En 1.12, ce tirage au hasard parmi les variantes avait lieu, mais il ne portait jamais que sur une seule variante.
+  - L'émeraude n'est pas une variante de la monnaie ailleurs que dans les échanges, comme en 1.12 : les recettes et le loot de l'émeraude restent vanilla.
+  - 3 tests JUnit sur des échanges d'exemple écrits à la main, et 2 GameTest : l'échange du forgeron, relu depuis le registre du serveur, paie avec la monnaie et demande le lingot généré du fer ; le serveur charge chaque échange réécrit.
 
 #### 4.8 `Feat: generate translations and walk damage types`
 - **Contenu** :
@@ -682,7 +686,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 4.6 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.6 : 119 tests JUnit et 29 GameTest au vert. **Prochaine étape : 4.7**, échanges des villageois payés avec la monnaie générée.
+**État** : commits 1.1 à 4.7 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.7 : 122 tests JUnit et 31 GameTest au vert. **Prochaine étape : 4.8**, traductions et types de dégâts générés.
 
 **Environnement** :
 

@@ -15,6 +15,7 @@ import fr.minecraftpp.pack.vanilla.VanillaData;
 import fr.minecraftpp.pack.vanilla.VanillaLootTableRewriter;
 import fr.minecraftpp.pack.vanilla.VanillaRecipeRewriter;
 import fr.minecraftpp.pack.vanilla.VariantTagWriter;
+import fr.minecraftpp.pack.vanilla.VillagerTradeRewriter;
 
 /**
  * The writers of every file of the generated pack: client resources first, then server data, then the rewritten vanilla data.
@@ -30,6 +31,6 @@ public final class GeneratedPackWriters
 	 */
 	public static List<GeneratedResourceWriter> all(VanillaData vanillaData)
 	{
-		return List.of(new BlockStateWriter(), new BlockModelWriter(), new ItemModelWriter(), new ItemDefinitionWriter(), new RecipeWriter(), new LootTableWriter(), new TagWriter(), new RepairMaterialTagWriter(), new OreFeatureWriter(), new VariantTagWriter(), new VanillaRecipeRewriter(vanillaData), new VanillaLootTableRewriter(vanillaData));
+		return List.of(new BlockStateWriter(), new BlockModelWriter(), new ItemModelWriter(), new ItemDefinitionWriter(), new RecipeWriter(), new LootTableWriter(), new TagWriter(), new RepairMaterialTagWriter(), new OreFeatureWriter(), new VariantTagWriter(), new VanillaRecipeRewriter(vanillaData), new VanillaLootTableRewriter(vanillaData), new VillagerTradeRewriter(vanillaData));
 	}
 }
