@@ -6,5 +6,8 @@
 	"minecraftpp.world.wrong_seed.message": "This world was created with the Minecraft++ seed %1$s, not with the seed of this game: its ores would change. To play it, write \"seed=%1$s\" in config/minecraftpp/MppConfig.mpp and restart the game.",
 	"minecraftpp.world.unreadable_seed.message": "The Minecraft++ seed of this world cannot be read from its mppSeed.mpp file. Restore this file to play the world.",
 	"minecraftpp.world.vanilla.title": "Vanilla world",
-	"minecraftpp.world.vanilla.message": "This world was created without Minecraft++. Do not open it with Minecraft++, or it will not be playable in vanilla anymore."
+	"minecraftpp.world.vanilla.message": "This world was created without Minecraft++. Do not open it with Minecraft++, or it will not be playable in vanilla anymore.",
+	"minecraftpp.world.list.valid": "Valid Mpp Seed",
+	"minecraftpp.world.list.wrong": "Wrong Mpp Seed, change the seed in the MppConfig file with the mppSeed in the save folder",
+	"minecraftpp.world.list.vanilla": "This is a Vanilla world, please do not open it or it will not be playable in Vanilla anymore."
 }

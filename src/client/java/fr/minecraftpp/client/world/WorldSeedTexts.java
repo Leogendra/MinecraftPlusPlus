@@ -6,10 +6,11 @@ import java.util.Optional;
 import fr.minecraftpp.core.config.MalformedSeedException;
 import fr.minecraftpp.core.world.WorldSeedStatus;
 import fr.minecraftpp.world.MppSeedFile;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
 /**
- * The texts that tell the player why a world cannot be opened with the current Minecraft++ seed, and what to do, as 1.12 did.
+ * The texts that tell the player whether a world can be opened with the current Minecraft++ seed, and otherwise why not and what to do, as 1.12 did.
  */
 public final class WorldSeedTexts
 {
@@ -37,6 +38,19 @@ public final class WorldSeedTexts
 			case VALID -> throw new IllegalArgumentException("A world of the configured seed is never refused");
 			case WRONG -> readableSeed(seedFile).map(seed -> Component.translatable("minecraftpp.world.wrong_seed.message", String.valueOf(seed))).orElse(Component.translatable("minecraftpp.world.unreadable_seed.message"));
 			case VANILLA -> Component.translatable("minecraftpp.world.vanilla.message");
+		};
+	}
+
+	/**
+	 * The information line of a world in the world list, behind the seed status, as in 1.12. A world that cannot be opened only shows why.
+	 */
+	public static Component worldListInfo(WorldSeedStatus status, Component vanillaInfo)
+	{
+		return switch (status)
+		{
+			case VALID -> Component.empty().append(Component.translatable("minecraftpp.world.list.valid").withStyle(ChatFormatting.GREEN)).append(", ").append(vanillaInfo);
+			case WRONG -> Component.translatable("minecraftpp.world.list.wrong").withStyle(ChatFormatting.DARK_RED);
+			case VANILLA -> Component.translatable("minecraftpp.world.list.vanilla").withStyle(ChatFormatting.DARK_RED);
 		};
 	}
 

@@ -158,7 +158,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 5.2 | `Feat: accept generated variants in golem and piglin interactions` | 4 | 10 | | 1 | 15 | M | [x] |
 | 6.1 | `Feat: store the Minecraft++ seed in new worlds` | 4 | 2 | | | 6 | S | [x] |
 | 6.2 | `Feat: refuse to open worlds created with another seed` | 2 | 2 | | | 4 | S | [x] |
-| 6.3 | `Feat: show the Minecraft++ seed status in the world list` | 2 | 2 | | | 4 | S | [ ] |
+| 6.3 | `Feat: show the Minecraft++ seed status in the world list` | 1 | 3 | | | 4 | S | [x] |
 | 7.1 | `Chore: remove the MCP workspace and bundled Mojang files` | | 1 | | 2 896 | 2 897 | XL | [ ] |
 | 7.2 | `Docs: rewrite the README for the Fabric version` | 1 | 1 | | | 2 | S | [ ] |
 
@@ -608,6 +608,10 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
 - **Contenu** : `WorldListEntryMixin` ajoute « Valid Mpp Seed », « Wrong Mpp Seed » ou l'avertissement de monde vanilla dans la liste des mondes.
 - **Fichiers** : C `WorldListEntryMixin`, `WorldListClientGameTest` (client) ; M `minecraftpp.client.mixins.json`, `en_us.json`.
 - **Tests** : libellé affiché pour chacun des trois statuts (client).
+- **Réalisé** :
+  - `WorldListEntryMixin` (client) enveloppe l'appel `summary.getInfo()` du constructeur de l'entrée de liste. Un monde valide affiche « Valid Mpp Seed » en vert devant l'information vanilla. Un monde d'une autre seed et un monde vanilla affichent seulement l'explication, en rouge foncé, avec les textes de la 1.12. Une ligne trop longue reçoit l'info-bulle vanilla.
+  - Les textes sont choisis par `WorldSeedTexts.worldListInfo`, à côté de ceux de 6.2.
+  - Pas de test automatique (D9). **À vérifier en jeu** : les trois libellés dans la liste des mondes.
 
 ### Phase 7 — Nettoyage et documentation
 
@@ -715,7 +719,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 6.2 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 5 sont terminées, ainsi que 6.1 et 6.2 : 131 tests JUnit et 37 GameTest au vert. **Prochaine étape : 6.3**, statut de la seed dans la liste des mondes.
+**État** : commits 1.1 à 6.3 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 6 sont terminées : 131 tests JUnit et 37 GameTest au vert. **Prochaine étape : 7.1**, suppression de l'espace MCP.
 
 **Environnement** :
 
