@@ -1,5 +1,6 @@
 *.sh
 *.bat
+!gradlew.bat
 
 CHANGELOG
 LICENSE.txt
@@ -14,3 +15,26 @@ eclipse/
 docs/
 conf/
 bin/
+
+# Gradle
+.gradle/
+build/
+out/
+classes/
+
+# Fabric
+run/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# Java
+hs_err_*.log
+replay_*.log
+*.hprof
+*.jfr

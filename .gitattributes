@@ -1,2 +1,9 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# The Linux start script must keep LF, the Windows one CRLF
+/gradlew text eol=lf
+*.bat text eol=crlf
+
+*.jar binary
+*.png binary
