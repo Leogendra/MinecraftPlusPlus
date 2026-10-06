@@ -3,7 +3,7 @@ package fr.minecraftpp.core.world;
 import fr.minecraftpp.core.set.OreGeneration;
 
 /**
- * Converts the 1.12 ore heights to the current world, whose bottom moved from 0 to -64 (decision D6): every height is shifted down by 64, so the ores keep their place relative to the bottom of the world.
+ * Converts the 1.12 ore heights to the current world, whose bottom moved from 0 to -64 (decision D6): a vein keeps its 1.12 maximum height and reaches down to the new bottom of the world, so every ore also generates above the deepslate. The number of veins grows with the height range, so that each layer keeps the 1.12 density.
  */
 public final class OreHeightMapping
 {
@@ -23,6 +23,16 @@ public final class OreHeightMapping
 	 */
 	public static int maxInclusive(OreGeneration generation)
 	{
-		return WORLD_BOTTOM + generation.maxHeight() - 1;
+		return generation.maxHeight() - 1;
+	}
+
+	/**
+	 * The 1.12 veins per chunk, scaled by the growth of the height range and rounded to the nearest.
+	 */
+	public static int veinsPerChunk(OreGeneration generation)
+	{
+		int range = generation.maxHeight() - WORLD_BOTTOM;
+
+		return (generation.veinAmount() * range + generation.maxHeight() / 2) / generation.maxHeight();
 	}
 }

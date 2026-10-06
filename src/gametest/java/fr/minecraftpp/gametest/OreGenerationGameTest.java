@@ -1,5 +1,6 @@
 package fr.minecraftpp.gametest;
 
+import java.util.Arrays;
 import java.util.List;
 
 import fr.minecraftpp.MinecraftPlusPlus;
@@ -14,6 +15,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.levelgen.NoiseChunk;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 /**
@@ -44,6 +46,18 @@ public class OreGenerationGameTest
 			}
 		}
 
+		helper.succeed();
+	}
+
+	/**
+	 * The flat game test world never fills a chunk from the terrain noise, so the test checks that the mixin removing the vanilla copper and iron veins is merged into the class that would.
+	 */
+	@GameTest
+	public void terrainNoiseDoesNotPlaceTheVanillaOreVeins(GameTestHelper helper)
+	{
+		boolean disabled = Arrays.stream(NoiseChunk.class.getDeclaredMethods()).anyMatch(method -> method.getName().contains("minecraftpp$disableVanillaOreVeins"));
+
+		helper.assertTrue(disabled, "the vanilla ore veins are still generated");
 		helper.succeed();
 	}
 }

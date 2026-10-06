@@ -15,18 +15,27 @@ class OreHeightMappingTest
 	}
 
 	/**
-	 * Decision D6: a 1.12 maximum height of 16 becomes -48, excluded, as 1.12 excluded the maximum.
+	 * Decision D6: the 1.12 maximum height is kept, excluded as 1.12 excluded it, so that every ore also generates above the deepslate.
 	 */
 	@Test
-	void maximumHeightsAreShiftedDownBy64()
+	void maximumHeightsAreKept()
 	{
-		assertEquals(-49, OreHeightMapping.maxInclusive(new OreGeneration(1, 5, 16)));
-		assertEquals(63, OreHeightMapping.maxInclusive(new OreGeneration(1, 5, 128)));
+		assertEquals(15, OreHeightMapping.maxInclusive(new OreGeneration(1, 5, 16)));
+		assertEquals(127, OreHeightMapping.maxInclusive(new OreGeneration(1, 5, 128)));
 	}
 
 	@Test
-	void theLowestOreStaysOnTheBottomLayer()
+	void everyOreReachesAboveTheDeepslate()
 	{
-		assertEquals(-64, OreHeightMapping.maxInclusive(new OreGeneration(1, 5, 1)));
+		assertEquals(0, OreHeightMapping.maxInclusive(new OreGeneration(1, 5, 1)));
+	}
+
+	@Test
+	void veinsPerChunkGrowWithTheHeightRange()
+	{
+		assertEquals(5, OreHeightMapping.veinsPerChunk(new OreGeneration(1, 5, 16)));
+		assertEquals(6, OreHeightMapping.veinsPerChunk(new OreGeneration(2, 5, 32)));
+		assertEquals(20, OreHeightMapping.veinsPerChunk(new OreGeneration(10, 5, 64)));
+		assertEquals(5, OreHeightMapping.veinsPerChunk(new OreGeneration(3, 5, 128)));
 	}
 }

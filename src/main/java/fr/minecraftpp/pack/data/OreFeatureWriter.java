@@ -13,7 +13,7 @@ import fr.minecraftpp.pack.data.OreFeatureJson.Placement;
 import net.minecraft.resources.Identifier;
 
 /**
- * Writes the world generation of each ore, as 1.12 placed it: a number of veins per chunk, of a number of blocks, at a uniform height up to a maximum. The vein becomes the deepslate ore where it crosses deepslate.
+ * Writes the world generation of each ore, as 1.12 placed it: a number of veins per chunk, of a number of blocks, at a uniform height up to a maximum, converted by {@link OreHeightMapping}. The vein becomes the deepslate ore where it crosses deepslate.
  */
 public final class OreFeatureWriter implements GeneratedResourceWriter
 {
@@ -43,7 +43,7 @@ public final class OreFeatureWriter implements GeneratedResourceWriter
 	private static GeneratedFile placed(OreSetDefinition set)
 	{
 		OreGeneration generation = set.generation();
-		List<Placement> placement = List.of(Placement.count(generation.veinAmount()), Placement.inSquare(), Placement.uniformHeight(OreHeightMapping.minInclusive(), OreHeightMapping.maxInclusive(generation)), Placement.biome());
+		List<Placement> placement = List.of(Placement.count(OreHeightMapping.veinsPerChunk(generation)), Placement.inSquare(), Placement.uniformHeight(OreHeightMapping.minInclusive(), OreHeightMapping.maxInclusive(generation)), Placement.biome());
 
 		return GeneratedFile.data(featureId(set).withPath(path -> "worldgen/placed_feature/" + path + ".json"), new OreFeatureJson.Placed(featureId(set).toString(), placement));
 	}
