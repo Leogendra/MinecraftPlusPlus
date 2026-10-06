@@ -1,13 +1,13 @@
-package fr.minecraftpp.util.nameGenerator;
+package fr.minecraftpp.core.naming;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Random;
 
-import fr.minecraftpp.util.nameGenerator.map.Branch;
-import fr.minecraftpp.util.nameGenerator.map.InitialBranch;
-import fr.minecraftpp.util.nameGenerator.map.IntegerWeightedProbabilisticMap;
+import fr.minecraftpp.core.naming.map.Branch;
+import fr.minecraftpp.core.naming.map.InitialBranch;
+import fr.minecraftpp.core.naming.map.IntegerWeightedProbabilisticMap;
 
 public class Tree
 {

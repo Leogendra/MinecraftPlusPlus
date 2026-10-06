@@ -1,4 +1,4 @@
-package fr.minecraftpp.util.nameGenerator.map;
+package fr.minecraftpp.core.naming.map;
 
 import java.util.Random;
 

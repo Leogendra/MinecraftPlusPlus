@@ -1,9 +1,9 @@
-package fr.minecraftpp.util.nameGenerator.map;
+package fr.minecraftpp.core.naming.map;
 
 import java.util.Map;
 
-import fr.minecraftpp.util.nameGenerator.Tree;
-import fr.minecraftpp.util.nameGenerator.Word;
+import fr.minecraftpp.core.naming.Tree;
+import fr.minecraftpp.core.naming.Word;
 
 public class Branch extends WeightedProbabilisticMap<Character>
 {

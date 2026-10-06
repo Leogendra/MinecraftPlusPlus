@@ -129,7 +129,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 1.3 | `Build: run build and tests in GitHub Actions` | 1 | | | | 1 | S | [x] |
 | 2.1 | `Test: capture 1.12 generator outputs as golden fixtures` | 4 | | | | 4 | S | [x] |
 | 2.2 | `Refactor: move the constraint solver to the core package` | 3 | 1 | 13 | | 17 | L | [x] |
-| 2.3 | `Refactor: move the name generator to the core package` | 1 | | 8 | | 9 | M | [ ] |
+| 2.3 | `Refactor: move the name generator to the core package` | 1 | | 8 | | 9 | M | [x] |
 | 2.4 | `Refactor: move ore value types and distributions to the core package` | 5 | | 13 | | 18 | L | [ ] |
 | 2.5 | `Refactor: describe ore sets as immutable definitions` | 10 | | | | 10 | M | [ ] |
 | 2.6 | `Refactor: compute tool and armor stats in the core` | 2 | 1 | 2 | 5 | 10 | M | [ ] |

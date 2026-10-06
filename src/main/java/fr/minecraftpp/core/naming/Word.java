@@ -1,4 +1,4 @@
-package fr.minecraftpp.util.nameGenerator;
+package fr.minecraftpp.core.naming;
 
 import java.util.ArrayList;
 import java.util.List;
