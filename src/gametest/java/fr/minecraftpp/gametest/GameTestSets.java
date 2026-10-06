@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.Block;
  * <li>brumed: material, blue dye, beacon, diamond;</li>
  * <li>formutlest: simple, currency, slippery;</li>
  * <li>novic: simple, redstone, beacon, firestarter;</li>
- * <li>imer: simple, enchanting currency;</li>
+ * <li>imer: simple, enchanting currency, copper;</li>
  * <li>ing: metal, iron, shiny, accelerating.</li>
  * </ul>
  */

@@ -20,7 +20,7 @@ public final class VariantRules
 	}
 
 	/**
-	 * The variants a role gives to a set of the given type. Only the coal, iron, gold and diamond roles replace vanilla items; the diamond role has no nugget.
+	 * The variants a role gives to a set of the given type. Only the coal, iron, gold, diamond and copper roles replace vanilla items; the diamond role has no nugget.
 	 */
 	public static List<VanillaVariant> variantsOf(SetType type, VanillaRole role)
 	{
@@ -30,6 +30,7 @@ public final class VariantRules
 			case IRON -> metalVariants(type, "iron_ingot", "iron_block", "iron", "iron_nugget");
 			case GOLD -> metalVariants(type, "gold_ingot", "gold_block", "golden", "gold_nugget");
 			case DIAMOND -> metalVariants(type, "diamond", "diamond_block", "diamond", null);
+			case COPPER -> metalVariants(type, "copper_ingot", "copper_block", "copper", "copper_nugget");
 			default -> List.of();
 		};
 	}

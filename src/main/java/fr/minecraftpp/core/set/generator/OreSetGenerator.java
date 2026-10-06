@@ -3,6 +3,7 @@ package fr.minecraftpp.core.set.generator;
 import java.util.Random;
 
 import fr.minecraftpp.core.set.OreSetDefinition;
+import fr.minecraftpp.core.set.VanillaRole;
 import fr.minecraftpp.core.trait.TraitCatalog;
 
 /**
@@ -14,6 +15,11 @@ public interface OreSetGenerator
 	 * First pass: draws the values the 1.12 set drew in its constructor (textures, color, harvest level, ore, material).
 	 */
 	void construct(Random rand);
+
+	/**
+	 * Gives a role to the set, between the two passes. It draws nothing: the role takes effect in the second pass.
+	 */
+	void assignRole(VanillaRole role);
 
 	/**
 	 * Second pass, once every set is constructed: draws the random traits, then applies the roles.

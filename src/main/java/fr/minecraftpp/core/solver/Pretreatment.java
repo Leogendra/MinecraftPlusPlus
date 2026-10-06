@@ -10,6 +10,11 @@ import fr.minecraftpp.core.ore.OreProperties;
 
 public class Pretreatment
 {
+	/**
+	 * The roles that replace a vanilla ore, each given to a different ore. With seven ores, exactly one ore is left without any of them.
+	 */
+	public static final List<OreProperties> VANILLA_GROUP = List.of(OreProperties.COAL, OreProperties.IRON, OreProperties.GOLD, OreProperties.DIAMOND, OreProperties.REDSTONE, OreProperties.CURRENCY);
+
 	private final int NUMBER_OF_ORES;
 
 	private List<String> variables;
@@ -146,12 +151,10 @@ public class Pretreatment
 		str += allDiffFrom(nonMetalGroup);
 
 		List<String> vanillaGroup = new ArrayList<String>();
-		vanillaGroup.add(OreProperties.COAL.toString());
-		vanillaGroup.add(OreProperties.IRON.toString());
-		vanillaGroup.add(OreProperties.GOLD.toString());
-		vanillaGroup.add(OreProperties.DIAMOND.toString());
-		vanillaGroup.add(OreProperties.REDSTONE.toString());
-		vanillaGroup.add(OreProperties.CURRENCY.toString());
+		for (OreProperties property : VANILLA_GROUP)
+		{
+			vanillaGroup.add(property.toString());
+		}
 		str += allDiffFrom(vanillaGroup);
 
 		List<String> materialAndCurrency = getAllVariablesFrom(OreProperties.MATERIAL);

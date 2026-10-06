@@ -22,7 +22,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 
 /**
- * Seed 42: kal is a familiar material set whose ore needs a stone tool and drops one kal; it is the only set mined with a stone tool. Its ore generates 20 veins of 9 blocks per chunk, below the 1.12 height 64.
+ * Seed 42: kal is a familiar material set whose ore needs a stone tool and drops one kal; dium, the copper set, is the other set mined with a stone tool. Its ore generates 20 veins of 9 blocks per chunk, below the 1.12 height 64.
  */
 class DataWritersTest
 {

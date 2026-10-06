@@ -148,7 +148,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 4.2 | `Feat: generate block states, models and item definitions` | 20 | 4 | 24 | 19 | 67 | XL | [x] |
 | 4.3 | `Feat: generate recipes, loot tables and tags` | 12 | 7 | | | 19 | L | [x] |
 | 4.4 | `Feat: generate ore features and replace vanilla ores` | 8 | 4 | | 1 | 13 | M | [x] |
-| 4.4b | `Feat: add copper as a generated ore role` | | | | | | M | [ ] |
+| 4.4b | `Feat: add copper as a generated ore role` | 3 | 15 | | | 18 | L | [x] |
 | 4.5 | `Feat: make vanilla recipes accept generated variants` | 4 | 1 | | | 5 | S | [ ] |
 | 4.6 | `Feat: replace vanilla loot with generated variants` | 2 | 1 | | | 3 | S | [ ] |
 | 4.7 | `Feat: pay villagers with the generated currency` | 3 | 1 | | | 4 | S | [ ] |
@@ -487,6 +487,12 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
   - ses objets deviennent des variantes du cuivre vanilla (lingot, bloc, pépite) ;
   - le cuivre vanilla est retiré de la génération, comme les autres minerais remplacés.
 - **Tests** : de nouveaux fichiers de référence sont capturés pour les 3 seeds, car l'ajout d'un rôle change les tirages. Les fichiers 1.12 restent dans l'historique du commit 2.1.
+- **Réalisé** :
+  - **Écart : aucune nouvelle variable dans le solveur, aucun tirage changé.** La contrainte « groupe vanilla » du solveur donne déjà charbon, fer, or, diamant, redstone et monnaie à six minerais différents : avec sept minerais, il en reste toujours exactement un. Une variable `copper` ajoutée à ce groupe aurait atterri sur ce même minerai, mais en changeant l'ordre des tirages, donc toutes les seeds. Le rôle cuivre est donc donné à ce minerai libre, après la résolution et sans tirage (`OreCatalogGenerator.assignCopper`, groupe partagé par `Pretreatment.VANILLA_GROUP`).
+  - Conséquence : les fichiers de référence 1.12 restent valides et inchangés. `RoleScope.MINECRAFT_1_12` génère sans cuivre pour les tests de parité ; le jeu utilise `RoleScope.WITH_COPPER`. Pas de nouveaux fichiers de référence à capturer.
+  - **Effets du rôle** : minerai et bloc récoltés à la pioche en pierre, nom `copper` dans `/mppinfo`, variantes du cuivre vanilla (lingot, bloc, pépite, outils et armures `copper_*`). Les outils d'un set cuivre minent comme les outils en cuivre vanilla, qui minent exactement comme ceux en pierre (même tag `incorrect_for_*`) : leur niveau est donc `STONE`. Leurs statistiques restent celles tirées pour le set. La rareté n'est pas modifiée. Les features `ore_copper` et `ore_copper_large` sont retirées de la génération.
+  - Dans la seed des GameTest, le set cuivre est imer ; dans la seed 42, dium (qui passe de la pioche en diamant à la pioche en pierre).
+  - Le rendu « format de référence » d'un set est déplacé dans `GoldenDetails` (tests). 2 tests JUnit : un seul set cuivre sur 2 000 seeds, jamais dans le groupe vanilla, récolté à la pierre ; pour les 4 seeds de référence, seuls le rôle et les niveaux de récolte du set cuivre diffèrent de la 1.12.
 
 #### 4.5 `Feat: make vanilla recipes accept generated variants`
 - **Contenu** :
@@ -662,7 +668,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 4.4 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.4 : 107 tests JUnit et 24 GameTest au vert. **Prochaine étape : 4.4b**, le rôle cuivre.
+**État** : commits 1.1 à 4.4b faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.4b : 109 tests JUnit et 24 GameTest au vert. **Prochaine étape : 4.5**, recettes vanilla acceptant les variantes.
 
 **Environnement** :
 

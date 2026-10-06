@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 /**
- * Replaces the overworld ores of 1.12 (coal, iron, gold, redstone, diamond, lapis and emerald) by the generated ores, as 1.12 did (decision D6). Copper and the nether ores stay vanilla.
+ * Replaces the overworld ores of 1.12 (coal, iron, gold, redstone, diamond, lapis and emerald) and copper by the generated ores, as 1.12 did (decision D6). The nether ores stay vanilla.
  */
 public final class OreBiomeModifications
 {
@@ -28,7 +28,7 @@ public final class OreBiomeModifications
 	 */
 	private static final Predicate<BiomeSelectionContext> OVERWORLD = BiomeSelectors.tag(BiomeTags.IS_OVERWORLD);
 
-	private static final List<ResourceKey<PlacedFeature>> REPLACED_VANILLA_ORES = List.of(OrePlacements.ORE_COAL_UPPER, OrePlacements.ORE_COAL_LOWER, OrePlacements.ORE_IRON_UPPER, OrePlacements.ORE_IRON_MIDDLE, OrePlacements.ORE_IRON_SMALL, OrePlacements.ORE_GOLD, OrePlacements.ORE_GOLD_LOWER, OrePlacements.ORE_GOLD_EXTRA, OrePlacements.ORE_REDSTONE, OrePlacements.ORE_REDSTONE_LOWER, OrePlacements.ORE_DIAMOND, OrePlacements.ORE_DIAMOND_MEDIUM, OrePlacements.ORE_DIAMOND_LARGE, OrePlacements.ORE_DIAMOND_BURIED, OrePlacements.ORE_LAPIS, OrePlacements.ORE_LAPIS_BURIED, OrePlacements.ORE_EMERALD);
+	private static final List<ResourceKey<PlacedFeature>> REPLACED_VANILLA_ORES = List.of(OrePlacements.ORE_COAL_UPPER, OrePlacements.ORE_COAL_LOWER, OrePlacements.ORE_IRON_UPPER, OrePlacements.ORE_IRON_MIDDLE, OrePlacements.ORE_IRON_SMALL, OrePlacements.ORE_GOLD, OrePlacements.ORE_GOLD_LOWER, OrePlacements.ORE_GOLD_EXTRA, OrePlacements.ORE_REDSTONE, OrePlacements.ORE_REDSTONE_LOWER, OrePlacements.ORE_DIAMOND, OrePlacements.ORE_DIAMOND_MEDIUM, OrePlacements.ORE_DIAMOND_LARGE, OrePlacements.ORE_DIAMOND_BURIED, OrePlacements.ORE_LAPIS, OrePlacements.ORE_LAPIS_BURIED, OrePlacements.ORE_EMERALD, OrePlacements.ORE_COPPER, OrePlacements.ORE_COPPER_LARGE);
 
 	private OreBiomeModifications()
 	{

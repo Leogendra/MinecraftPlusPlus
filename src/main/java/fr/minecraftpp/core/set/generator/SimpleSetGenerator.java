@@ -92,6 +92,7 @@ public class SimpleSetGenerator implements OreSetGenerator
 	/**
 	 * Gives a role handed out by the solver to the set, unless the set ignores it. As in 1.12, the roles are assigned after the construction pass and do not change it.
 	 */
+	@Override
 	public void assignRole(VanillaRole role)
 	{
 		if (this.acceptsRole(role))
@@ -214,6 +215,7 @@ public class SimpleSetGenerator implements OreSetGenerator
 			case IRON -> this.applyMetalRole(HarvestLevel.STONE, 1);
 			case GOLD -> this.applyMetalRole(HarvestLevel.IRON, 1);
 			case DIAMOND -> this.applyMetalRole(HarvestLevel.IRON, 2);
+			case COPPER -> this.setHarvestLevel(HarvestLevel.STONE);
 			case BLUE_DYE ->
 			{
 				// The blue dye role only adds a recipe

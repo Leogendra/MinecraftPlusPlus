@@ -33,7 +33,7 @@ public final class SetInfoFormatter
 	}
 
 	/**
-	 * The roles in the 1.12 display order. The coal role implies the fuel role, which is then not repeated.
+	 * The roles in the 1.12 display order, then copper, which 1.12 did not have. The coal role implies the fuel role, which is then not repeated.
 	 */
 	private static String roles(OreSetDefinition set)
 	{
@@ -49,6 +49,7 @@ public final class SetInfoFormatter
 		addIf(roles, set.hasRole(VanillaRole.IRON), VanillaRole.IRON.getInfoName());
 		addIf(roles, set.hasRole(VanillaRole.GOLD), VanillaRole.GOLD.getInfoName());
 		addIf(roles, set.hasRole(VanillaRole.DIAMOND), VanillaRole.DIAMOND.getInfoName());
+		addIf(roles, set.hasRole(VanillaRole.COPPER), VanillaRole.COPPER.getInfoName());
 
 		return String.join(", ", roles);
 	}

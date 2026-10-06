@@ -18,6 +18,7 @@ import fr.minecraftpp.core.config.MalformedSeedException;
 import fr.minecraftpp.core.set.ContentIds;
 import fr.minecraftpp.core.set.OreCatalog;
 import fr.minecraftpp.core.set.generator.OreCatalogGenerator;
+import fr.minecraftpp.core.set.generator.RoleScope;
 import fr.minecraftpp.core.text.SetInfoFormatter;
 import fr.minecraftpp.core.trait.TraitCatalog;
 import fr.minecraftpp.pack.GeneratedPackContents;
@@ -123,7 +124,7 @@ public class MinecraftPlusPlus implements ModInitializer
 	{
 		try
 		{
-			return OreCatalogGenerator.generate(seed, WordGenDictionary.nameGenerator(seed), TraitCatalog.defaults());
+			return OreCatalogGenerator.generate(seed, WordGenDictionary.nameGenerator(seed), TraitCatalog.defaults(), RoleScope.WITH_COPPER);
 		}
 		catch (IOException exception)
 		{

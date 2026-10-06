@@ -81,6 +81,7 @@ public class MaterialSetGenerator extends SimpleSetGenerator
 		{
 			case IRON, GOLD -> this.miningLevel = HarvestLevel.IRON;
 			case DIAMOND -> this.miningLevel = HarvestLevel.DIAMOND;
+			case COPPER -> this.miningLevel = HarvestLevel.STONE;
 			default ->
 			{
 				// The other roles do not change the material

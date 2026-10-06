@@ -7,7 +7,7 @@ package fr.minecraftpp.core.set;
  */
 public enum VanillaRole
 {
-	BLUE_DYE("bluedye"), REDSTONE("redstone"), CURRENCY("currency"), FUEL("fuel"), BEACON("beacon"), ENCHANTING_CURRENCY("enchant"), COAL("coal"), IRON("iron"), GOLD("gold"), DIAMOND("diamond");
+	BLUE_DYE("bluedye"), REDSTONE("redstone"), CURRENCY("currency"), FUEL("fuel"), BEACON("beacon"), ENCHANTING_CURRENCY("enchant"), COAL("coal"), IRON("iron"), GOLD("gold"), DIAMOND("diamond"), COPPER("copper");
 
 	private final String infoName;
 

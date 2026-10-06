@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import fr.minecraftpp.core.naming.NameGenerator;
 import fr.minecraftpp.core.set.OreCatalog;
 import fr.minecraftpp.core.set.generator.OreCatalogGenerator;
+import fr.minecraftpp.core.set.generator.RoleScope;
 import fr.minecraftpp.core.trait.TraitCatalog;
 
 /**
@@ -21,9 +22,20 @@ public final class TestCatalogs
 	{
 	}
 
+	/**
+	 * The sets the game generates, copper included.
+	 */
 	public static OreCatalog generate(long seed)
 	{
-		return OreCatalogGenerator.generate(seed, nameGenerator(seed), TraitCatalog.defaults());
+		return OreCatalogGenerator.generate(seed, nameGenerator(seed), TraitCatalog.defaults(), RoleScope.WITH_COPPER);
+	}
+
+	/**
+	 * The sets 1.12 generated, to compare with the golden fixtures.
+	 */
+	public static OreCatalog generate112(long seed)
+	{
+		return OreCatalogGenerator.generate(seed, nameGenerator(seed), TraitCatalog.defaults(), RoleScope.MINECRAFT_1_12);
 	}
 
 	public static NameGenerator nameGenerator(long seed)

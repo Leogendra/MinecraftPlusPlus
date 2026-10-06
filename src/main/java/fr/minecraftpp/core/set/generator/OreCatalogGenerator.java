@@ -12,7 +12,9 @@ import fr.minecraftpp.core.naming.NameGenerator;
 import fr.minecraftpp.core.ore.OreProperties;
 import fr.minecraftpp.core.set.OreCatalog;
 import fr.minecraftpp.core.set.OreSetDefinition;
+import fr.minecraftpp.core.set.VanillaRole;
 import fr.minecraftpp.core.solver.Backtrack;
+import fr.minecraftpp.core.solver.Pretreatment;
 import fr.minecraftpp.core.trait.TraitCatalog;
 
 /**
@@ -26,7 +28,7 @@ public final class OreCatalogGenerator
 	{
 	}
 
-	public static OreCatalog generate(long seed, NameGenerator names, TraitCatalog traits)
+	public static OreCatalog generate(long seed, NameGenerator names, TraitCatalog traits, RoleScope roleScope)
 	{
 		Random rand = new Random(seed);
 		Map<Integer, List<OreProperties>> propertiesByOre = groupByOre(Backtrack.generateSolution(rand, NUMBER_OF_ORES));
@@ -36,6 +38,11 @@ public final class OreCatalogGenerator
 		for (List<OreProperties> properties : propertiesByOre.values())
 		{
 			generators.add(SetFactory.generateSet(properties, rand, uniqueName(names, usedNames)));
+		}
+
+		if (roleScope == RoleScope.WITH_COPPER)
+		{
+			assignCopper(generators, List.copyOf(propertiesByOre.values()));
 		}
 
 		GenerationContext context = new GenerationContext();
@@ -51,6 +58,31 @@ public final class OreCatalogGenerator
 		}
 
 		return new OreCatalog(seed, sets);
+	}
+
+	/**
+	 * The solver gives the six roles of its vanilla group to six different ores: copper goes to the seventh one. This takes no random draw, so the rest of the sets stays the same as in 1.12.
+	 */
+	private static void assignCopper(List<OreSetGenerator> generators, List<List<OreProperties>> propertiesByOre)
+	{
+		List<Integer> freeOres = new ArrayList<>();
+
+		for (int index = 0; index < propertiesByOre.size(); index++)
+		{
+			if (propertiesByOre.get(index).stream().noneMatch(Pretreatment.VANILLA_GROUP::contains))
+			{
+				freeOres.add(index);
+			}
+		}
+
+		if (freeOres.size() != 1)
+		{
+			throw new IllegalStateException("The solver should leave exactly one ore without a vanilla role, not " + freeOres.size());
+		}
+		else
+		{
+			generators.get(freeOres.getFirst()).assignRole(VanillaRole.COPPER);
+		}
 	}
 
 	/**
