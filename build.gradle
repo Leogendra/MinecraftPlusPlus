@@ -9,6 +9,11 @@ base {
 	archivesName = project.archives_base_name
 }
 
+// The jar is named after the Minecraft version it runs on; the mod version stays in fabric.mod.json.
+tasks.withType(AbstractArchiveTask).configureEach {
+	archiveVersion = project.minecraft_version
+}
+
 loom {
 	splitEnvironmentSourceSets()
 
