@@ -156,7 +156,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 4.9 | `Feat: generate tinted equipment assets for armors` | 3 | 2 | 6 | | 11 | M | [x] |
 | 5.1 | `Feat: use the generated enchanting currency in the enchanting table` | 4 | 5 | | 1 | 10 | M | [x] |
 | 5.2 | `Feat: accept generated variants in golem and piglin interactions` | 4 | 10 | | 1 | 15 | M | [x] |
-| 6.1 | `Feat: store the Minecraft++ seed in new worlds` | 4 | 1 | | | 5 | S | [ ] |
+| 6.1 | `Feat: store the Minecraft++ seed in new worlds` | 4 | 2 | | | 6 | S | [x] |
 | 6.2 | `Feat: refuse to open worlds created with another seed` | 2 | 2 | | | 4 | S | [ ] |
 | 6.3 | `Feat: show the Minecraft++ seed status in the world list` | 2 | 2 | | | 4 | S | [ ] |
 | 7.1 | `Chore: remove the MCP workspace and bundled Mojang files` | | 1 | | 2 896 | 2 897 | XL | [ ] |
@@ -590,6 +590,10 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
 - **Contenu** : `MppSeedFile` lit et écrit `mppSeed.mpp`, au même format qu'en 1.12. Un mixin client sur la création de monde l'écrit avant le premier démarrage du serveur intégré.
 - **Fichiers** : C `world/MppSeedFile`, `client/mixin/WorldCreationMixin`, `MppSeedFileTest`, `WorldCreationClientGameTest` (client) ; M `minecraftpp.client.mixins.json`.
 - **Tests** : lecture et écriture du fichier ; un nouveau monde contient `mppSeed.mpp` (client).
+- **Réalisé** :
+  - `MppSeedFile` lit et écrit `mppSeed.mpp` au format 1.12 : la seed sur la première ligne, puis l'avertissement. Il donne aussi le `WorldSeedStatus` du monde ; un fichier illisible vaut `WRONG`, car la seed attendue est inconnue.
+  - **Écart : enregistrement côté serveur, sans mixin client.** `NewWorldSeedRecorder` écrit le fichier au démarrage du serveur (`SERVER_STARTING`) quand les données du monde ne sont pas encore initialisées, c'est-à-dire pour un monde neuf, avant la création de ses niveaux. Ce point d'accroche couvre le monde solo comme le serveur dédié, et se teste en GameTest au lieu d'un test client.
+  - 4 tests JUnit (écriture, lecture d'un fichier 1.12, monde vanilla, fichier illisible) et 1 GameTest : le monde neuf du serveur de test a un fichier valide.
 
 #### 6.2 `Feat: refuse to open worlds created with another seed`
 - **Contenu** : `WorldOpenFlowsMixin` bloque l'ouverture d'un monde `WRONG` ou `VANILLA` et affiche un message expliquant quoi faire, comme en 1.12.
@@ -707,7 +711,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 5.2 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 5 sont terminées : 127 tests JUnit et 36 GameTest au vert. **Prochaine étape : 6.1**, seed Minecraft++ enregistrée dans les nouveaux mondes.
+**État** : commits 1.1 à 6.1 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 5 sont terminées, ainsi que 6.1 : 131 tests JUnit et 37 GameTest au vert. **Prochaine étape : 6.2**, refus d'ouvrir un monde d'une autre seed.
 
 **Environnement** :
 

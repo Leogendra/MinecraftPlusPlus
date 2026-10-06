@@ -24,6 +24,7 @@ import fr.minecraftpp.core.trait.TraitCatalog;
 import fr.minecraftpp.pack.GeneratedPackContents;
 import fr.minecraftpp.pack.GeneratedPackWriters;
 import fr.minecraftpp.pack.vanilla.VanillaPackData;
+import fr.minecraftpp.world.NewWorldSeedRecorder;
 import fr.minecraftpp.world.OreBiomeModifications;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -54,6 +55,7 @@ public class MinecraftPlusPlus implements ModInitializer
 		FlammabilityRegistration.register(catalog, content);
 		packContents = GeneratedPackContents.write(catalog, GeneratedPackWriters.all(new VanillaPackData()));
 		OreBiomeModifications.register(catalog);
+		NewWorldSeedRecorder.register(seed);
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) -> MppInfoCommand.register(dispatcher, catalog));
 	}
