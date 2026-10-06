@@ -152,7 +152,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 4.5 | `Feat: make vanilla recipes accept generated variants` | 16 | 4 | | | 20 | L | [x] |
 | 4.6 | `Feat: replace vanilla loot with generated variants` | 5 | 3 | | | 8 | M | [x] |
 | 4.7 | `Feat: pay villagers with the generated currency` | 6 | 3 | | | 9 | M | [x] |
-| 4.8 | `Feat: generate translations and walk damage types` | 4 | 2 | | 1 | 7 | M | [ ] |
+| 4.8 | `Feat: generate translations and walk damage types` | 5 | 9 | | 1 | 15 | M | [x] |
 | 4.9 | `Feat: generate tinted equipment assets for armors` | 3 | 2 | 6 | | 11 | M | [ ] |
 | 5.1 | `Feat: use the generated enchanting currency in the enchanting table` | 2 | 2 | 1 | | 5 | S | [ ] |
 | 5.2 | `Feat: accept generated variants in golem and piglin interactions` | 4 | 2 | | | 6 | M | [ ] |
@@ -538,6 +538,12 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
   - suppression de `ModLanguage`.
 - **Fichiers** : C `LanguageWriter`, `DamageTypeWriter`, `assets/minecraftpp/lang/en_us.json`, `LanguageWriterTest` ; M `WalkDamageModule`, `MinecraftPlusPlus` ; D 1.
 - **Tests** : noms au format « Xyzium Block » identiques à la 1.12 ; message de mort propre au set.
+- **Réalisé** :
+  - `LanguageWriter` écrit `assets/minecraftpp/lang/en_us.json` dans le pack généré. Il contient les noms des blocs (les minerais deepslate sont nouveaux), ceux des objets, les messages de mort et les noms des tags du mod : réparation (`Kal Repair Materials`) et variantes d'objets (`Iron Ingot Variants`). Le fichier statique `en_us.json` du jar porte les textes qui ne dépendent pas de la seed, pour l'instant le titre et la description du pack généré.
+  - `DamageTypeWriter` écrit un type de dégâts `minecraftpp:<nom>_block` par bloc qui blesse (D8), avec les réglages du sol brûlant vanilla. `ContentRegistrar` lit ce type dans le registre du monde au lieu de `hotFloor()`. Le message de mort reste celui de la 1.12 (`%1$s was killed on Xyzium Block`). S'y ajoute une variante `.player`, que la 1.12 n'avait pas, utilisée quand un autre combattant obtient la mort.
+  - `ModLanguage` est supprimé.
+  - **Limite connue** : Fabric signale encore en développement des tags d'objets sans traduction côté serveur. Le serveur ne lit que les fichiers de langue des jars, pas ceux du pack généré, et les tags `variants/tag/*` gardent leur identifiant comme nom (ils dépendent des recettes vanilla). Sans effet en jeu.
+  - 3 tests JUnit : les noms et messages de mort sont ceux de la 1.12 pour les 4 seeds de référence ; type de dégâts et messages de la seed des GameTest ; noms des tags. Le GameTest des dégâts au contact vérifie aussi le type de dégâts reçu.
 
 #### 4.9 `Feat: generate tinted equipment assets for armors`
 - **Contenu** :
@@ -686,7 +692,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 4.7 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.7 : 122 tests JUnit et 31 GameTest au vert. **Prochaine étape : 4.8**, traductions et types de dégâts générés.
+**État** : commits 1.1 à 4.8 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que 4.1 à 4.8 : 125 tests JUnit et 31 GameTest au vert. **Prochaine étape : 4.9**, equipment assets des armures.
 
 **Environnement** :
 
@@ -699,5 +705,4 @@ Questions à trancher au moment de planifier cette phase :
 
 **Points à reporter dans les commits suivants** :
 
-- 4.8 : remplacer `hotFloor()` dans `ContentRegistrar.registerBlocks` par le type de dégâts généré. Traduire aussi les tags d'objets générés (`tag.item.minecraftpp.<nom>_repair_materials`) : Fabric signale en développement les tags sans traduction ;
 - 4.9 : l'equipment asset de chaque matériau est `minecraftpp:<nom>` (`MaterialFactory.equipmentAsset`).

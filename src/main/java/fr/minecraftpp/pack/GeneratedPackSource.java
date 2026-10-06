@@ -20,8 +20,8 @@ public final class GeneratedPackSource implements RepositorySource
 {
 	public static final String PACK_ID = ContentIds.NAMESPACE + "_generated";
 
-	private static final PackLocationInfo LOCATION = new PackLocationInfo(PACK_ID, Component.literal("Minecraft++ generated content"), PackSource.BUILT_IN, Optional.empty());
-	private static final Component DESCRIPTION = Component.literal("Generated from the Minecraft++ seed");
+	private static final PackLocationInfo LOCATION = new PackLocationInfo(PACK_ID, Component.translatable("pack.minecraftpp.generated.title"), PackSource.BUILT_IN, Optional.empty());
+	private static final Component DESCRIPTION = Component.translatable("pack.minecraftpp.generated.description");
 	private static final PackSelectionConfig SELECTION = new PackSelectionConfig(true, Pack.Position.TOP, false);
 
 	private final PackType type;

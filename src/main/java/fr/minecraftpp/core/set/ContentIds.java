@@ -62,6 +62,14 @@ public final class ContentIds
 		return List.of(ore(set), deepslateOre(set), storageBlock(set));
 	}
 
+	/**
+	 * The damage type of a block that hurts the entities walking on it, named after the block.
+	 */
+	public static String walkDamage(OreSetDefinition set)
+	{
+		return storageBlock(set);
+	}
+
 	public static String nugget(OreSetDefinition set)
 	{
 		return set.name() + "_nugget";

@@ -24,9 +24,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -58,7 +61,7 @@ public final class ContentRegistrar
 	private static void registerBlocks(RegisteredContent content, OreSetDefinition set)
 	{
 		BlockBehaviourModules oreModules = BlockBehaviourModules.forOre(set.ore());
-		BlockBehaviourModules storageModules = BlockBehaviourModules.forStorageBlock(set.block(), level -> level.damageSources().hotFloor());
+		BlockBehaviourModules storageModules = BlockBehaviourModules.forStorageBlock(set.block(), walkDamageSource(set));
 
 		registerBlockWithItem(content, set, ContentIds.ore(set), properties -> new DynamicOreBlock(properties, set.ore(), oreModules), BlockPropertiesFactory.ore());
 		registerBlockWithItem(content, set, ContentIds.deepslateOre(set), properties -> new DynamicOreBlock(properties, set.ore(), oreModules), BlockPropertiesFactory.deepslateOre());
@@ -106,6 +109,16 @@ public final class ContentRegistrar
 		content.addBlock(path, block);
 
 		registerItem(content, path, itemProperties -> new DynamicBlockItem(block, itemProperties.useBlockDescriptionPrefix(), set.rarity()), new Item.Properties());
+	}
+
+	/**
+	 * The damage of the set's storage block, of the damage type written in the generated pack (decision D8). The type is read from the level, where the data packs registered it.
+	 */
+	private static Function<Level, DamageSource> walkDamageSource(OreSetDefinition set)
+	{
+		ResourceKey<DamageType> damageType = ResourceKey.create(Registries.DAMAGE_TYPE, identifier(ContentIds.walkDamage(set)));
+
+		return level -> new DamageSource(level.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(damageType));
 	}
 
 	static void registerItem(RegisteredContent content, String path, Function<Item.Properties, Item> factory, Item.Properties properties)

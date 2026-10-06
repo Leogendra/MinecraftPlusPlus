@@ -66,6 +66,22 @@ public final class DisplayNameFormatter
 		return "%1$s was killed on " + storageBlockName(set);
 	}
 
+	/**
+	 * Death message when another entity gets the kill credit; %2$s is the name of that entity. 1.12 had no such message.
+	 */
+	public static String walkDamageDeathMessageWhileFighting(OreSetDefinition set)
+	{
+		return walkDamageDeathMessage(set) + " while fighting %2$s";
+	}
+
+	/**
+	 * Name of the tag of the items that repair the tools and armor of the set.
+	 */
+	public static String repairMaterialsName(OreSetDefinition set)
+	{
+		return setName(set) + " Repair Materials";
+	}
+
 	public static String setName(OreSetDefinition set)
 	{
 		return capitalize(set.name());

@@ -6,6 +6,8 @@ import fr.minecraftpp.pack.asset.BlockModelWriter;
 import fr.minecraftpp.pack.asset.BlockStateWriter;
 import fr.minecraftpp.pack.asset.ItemDefinitionWriter;
 import fr.minecraftpp.pack.asset.ItemModelWriter;
+import fr.minecraftpp.pack.asset.LanguageWriter;
+import fr.minecraftpp.pack.data.DamageTypeWriter;
 import fr.minecraftpp.pack.data.LootTableWriter;
 import fr.minecraftpp.pack.data.OreFeatureWriter;
 import fr.minecraftpp.pack.data.RecipeWriter;
@@ -31,6 +33,6 @@ public final class GeneratedPackWriters
 	 */
 	public static List<GeneratedResourceWriter> all(VanillaData vanillaData)
 	{
-		return List.of(new BlockStateWriter(), new BlockModelWriter(), new ItemModelWriter(), new ItemDefinitionWriter(), new RecipeWriter(), new LootTableWriter(), new TagWriter(), new RepairMaterialTagWriter(), new OreFeatureWriter(), new VariantTagWriter(), new VanillaRecipeRewriter(vanillaData), new VanillaLootTableRewriter(vanillaData), new VillagerTradeRewriter(vanillaData));
+		return List.of(new BlockStateWriter(), new BlockModelWriter(), new ItemModelWriter(), new ItemDefinitionWriter(), new LanguageWriter(), new RecipeWriter(), new LootTableWriter(), new TagWriter(), new RepairMaterialTagWriter(), new OreFeatureWriter(), new DamageTypeWriter(), new VariantTagWriter(), new VanillaRecipeRewriter(vanillaData), new VanillaLootTableRewriter(vanillaData), new VillagerTradeRewriter(vanillaData));
 	}
 }

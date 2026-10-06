@@ -81,9 +81,13 @@ class AssetWritersTest
 		{
 			return List.of(object.getAsJsonObject("model").get("model").getAsString());
 		}
-		else
+		else if (location.getPath().startsWith("models/"))
 		{
 			return List.of(object.get("parent").getAsString());
+		}
+		else
+		{
+			return List.of();
 		}
 	}
 

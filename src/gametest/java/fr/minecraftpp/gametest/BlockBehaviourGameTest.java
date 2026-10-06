@@ -2,9 +2,13 @@ package fr.minecraftpp.gametest;
 
 import fr.minecraftpp.content.block.behaviour.AbsorbingModule;
 import fr.minecraftpp.content.block.behaviour.FallingModule;
+import fr.minecraftpp.pack.data.DamageTypeWriter;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.pig.Pig;
 import net.minecraft.world.level.block.Blocks;
@@ -58,6 +62,12 @@ public class BlockBehaviourGameTest
 		Pig pig = helper.spawnWithNoFreeWill(EntityType.PIG, POSITION.above());
 		float maximumHealth = pig.getMaxHealth();
 
-		helper.succeedWhen(() -> helper.assertTrue(pig.getHealth() < maximumHealth, "the pig standing on the block is not hurt"));
+		ResourceKey<DamageType> blockDamage = ResourceKey.create(Registries.DAMAGE_TYPE, DamageTypeWriter.damageTypeId(GameTestSets.set("voging")));
+
+		helper.succeedWhen(() ->
+		{
+			helper.assertTrue(pig.getHealth() < maximumHealth, "the pig standing on the block is not hurt");
+			helper.assertTrue(pig.getLastDamageSource() != null && pig.getLastDamageSource().is(blockDamage), "the pig is not hurt by the damage type of the block: " + pig.getLastDamageSource());
+		});
 	}
 }
