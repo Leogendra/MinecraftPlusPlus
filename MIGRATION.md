@@ -135,7 +135,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 2.6 | `Refactor: compute tool and armor stats in the core` | 2 | 1 | 2 | 5 | 10 | M | [x] |
 | 2.7 | `Refactor: generate the seven ore sets as definitions` | 7 | | 6 | 2 | 15 | M | [x] |
 | 2.8 | `Refactor: express variants and recipes as core definitions` | 8 | | 1 | 20 | 29 | L | [x] |
-| 2.9 | `Refactor: parse seeds and compare world seeds in the core` | 3 | | 1 | | 4 | S | [ ] |
+| 2.9 | `Refactor: parse seeds and compare world seeds in the core` | 3 | | 1 | | 4 | S | [x] |
 | 3.1 | `Feat: generate the ore catalog from the configured seed` | 4 | 1 | | 1 | 6 | M | [ ] |
 | 3.2 | `Feat: port the mppinfo command to Brigadier` | 2 | 1 | | 1 | 4 | S | [ ] |
 | 3.3 | `Feat: register ore and storage blocks` | 7 | 1 | | 5 | 13 | M | [ ] |
@@ -314,6 +314,7 @@ Le code Java pur est déplacé dans `core`. La logique couplée aux classes Mine
   - `WorldSeedStatus` donne le statut d'un monde : `VALID`, `WRONG` ou `VANILLA` selon la seed enregistrée dans le monde, absente ou non.
 - **Fichiers** : R 1 ; C `WorldSeedStatus`, `MppSeedParserTest`, `WorldSeedStatusTest`.
 - **Tests** : formats valides, invalides et vides ; les trois statuts.
+- **Réalisé** : `MppSeedParser` lit et écrit aussi `mppSeed.mpp` (le nombre en première ligne, puis l'avertissement de la 1.12, qui pointe désormais vers `config/minecraftpp`). Une erreur de format lève `MalformedSeedException`, une exception vérifiée dont le message est destiné au joueur. Un monde dont le fichier de seed est illisible sera traité comme `WRONG` (commit 6.2), pour ne jamais ouvrir un monde avec d'autres minerais.
 
 ### Phase 3 — Contenu Minecraft
 
