@@ -3,6 +3,7 @@
 	"package": "fr.minecraftpp.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
+		"BuiltInPackSourceMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

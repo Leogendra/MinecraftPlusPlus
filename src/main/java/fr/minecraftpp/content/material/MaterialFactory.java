@@ -71,7 +71,10 @@ public final class MaterialFactory
 		return ResourceKey.create(EquipmentAssets.ROOT_ID, ContentRegistrar.identifier(ContentIds.material(set)));
 	}
 
-	private static TagKey<Item> repairMaterials(OreSetDefinition set)
+	/**
+	 * The tag of the items that repair the tools and armor of the set, written in the generated pack.
+	 */
+	public static TagKey<Item> repairMaterials(OreSetDefinition set)
 	{
 		return TagKey.create(Registries.ITEM, ContentRegistrar.identifier(TagIds.repairMaterials(set)));
 	}

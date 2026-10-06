@@ -1,6 +1,7 @@
 package fr.minecraftpp;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -20,6 +21,8 @@ import fr.minecraftpp.core.set.OreCatalog;
 import fr.minecraftpp.core.set.generator.OreCatalogGenerator;
 import fr.minecraftpp.core.text.SetInfoFormatter;
 import fr.minecraftpp.core.trait.TraitCatalog;
+import fr.minecraftpp.pack.GeneratedPackContents;
+import fr.minecraftpp.pack.data.RepairMaterialTagWriter;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
@@ -34,6 +37,7 @@ public class MinecraftPlusPlus implements ModInitializer
 
 	private static OreCatalog catalog;
 	private static RegisteredContent content;
+	private static GeneratedPackContents packContents;
 
 	@Override
 	public void onInitialize()
@@ -46,6 +50,7 @@ public class MinecraftPlusPlus implements ModInitializer
 		CreativeTabEntries.register(catalog, content);
 		FuelRegistration.register(catalog, content);
 		FlammabilityRegistration.register(catalog, content);
+		packContents = GeneratedPackContents.write(catalog, List.of(new RepairMaterialTagWriter()));
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) -> MppInfoCommand.register(dispatcher, catalog));
 	}
@@ -77,6 +82,21 @@ public class MinecraftPlusPlus implements ModInitializer
 		else
 		{
 			return content;
+		}
+	}
+
+	/**
+	 * The files of the generated pack, served to the server data packs and the client resource packs.
+	 */
+	public static GeneratedPackContents packContents()
+	{
+		if (packContents == null)
+		{
+			throw new IllegalStateException("The Minecraft++ generated pack is not written yet");
+		}
+		else
+		{
+			return packContents;
 		}
 	}
 

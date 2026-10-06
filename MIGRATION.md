@@ -144,7 +144,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 3.6 | `Feat: register tools and armors from generated materials` | 4 | 1 | | 16 | 21 | L | [x] |
 | 3.7 | `Feat: list generated content in creative tabs` | 2 | 1 | | | 3 | S | [x] |
 | 3.8 | `Feat: register fuel values and flammability` | 3 | 1 | | | 4 | S | [x] |
-| 4.1 | `Feat: serve a generated in-memory pack` | 8 | 4 | | | 12 | M | [ ] |
+| 4.1 | `Feat: serve a generated in-memory pack` | 12 | 4 | | | 16 | L | [x] |
 | 4.2 | `Feat: generate block states, models and item definitions` | 8 | 2 | 24 | 17 | 51 | XL | [ ] |
 | 4.3 | `Feat: generate recipes, loot tables and tags` | 8 | 1 | | | 9 | M | [ ] |
 | 4.4 | `Feat: generate ore features and replace vanilla ores` | 5 | 1 | | 1 | 7 | M | [ ] |
@@ -422,6 +422,12 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
 - **Fichiers** : C 4 + 2 mixins + `GeneratedPackTest`, `GeneratedPackGameTest` ; M les 2 configurations de mixins et les 2 points d'entrée.
 - **Variante D1 = b** : un adaptateur ARRP ; M `build.gradle` et `fabric.mod.json` ; environ 5 fichiers.
 - **Tests** : le pack liste et sert les fichiers écrits ; un tag de test généré est visible par le serveur.
+- **Réalisé** :
+  - **Un seul mixin, commun**, au lieu de deux. Les packs de données du serveur (`ServerPacksSource`) et les packs de ressources du client (`ClientPackSource`) héritent tous deux de `BuiltInPackSource`. `BuiltInPackSourceMixin` ajoute le pack généré à la fin de `loadPacks`, avec le type de la source, lu par `@Shadow` sur le champ privé `packType` : pas d'accesseur. La configuration de mixins client et `MinecraftPlusPlusClient` restent inchangées.
+  - **Pack** : il s'appelle `minecraftpp_generated`. Il est obligatoire, placé en haut pour pouvoir remplacer les fichiers vanilla (4.5, 4.6), et sans fichier `pack.mcmeta`. Ses métadonnées sont construites en mémoire avec la version de format du jeu en cours (`SharedConstants.getCurrentVersion().packVersion(type)`) : aucun numéro de format n'est écrit en dur.
+  - **Contrat des générateurs** : `GeneratedResourceWriter` est une fonction pure du catalogue qui rend des `GeneratedFile` (type de pack, emplacement, texte JSON). `GeneratedPackContents` les rassemble au démarrage et refuse deux fichiers au même emplacement, l'un masquerait l'autre.
+  - **Écart : de vrais tags au lieu d'un tag de test.** Le « tag de test » prévu aurait demandé un point d'entrée réservé aux tests dans le code du mod. À la place, le premier générateur écrit les vrais tags de réparation `<nom>_repair_materials`, que les matériaux référencent depuis le commit 3.6 sans qu'ils existent. Les outils et armures se réparent donc avec l'objet principal de leur set, ce que vérifie le GameTest. `TagJson` et ce générateur sont repris par les tags du commit 4.3.
+  - 8 tests JUnit (pack en mémoire, tags de la seed 42) et 2 GameTest (pack actif sur le serveur, réparation).
 
 #### 4.2 `Feat: generate block states, models and item definitions`
 - **Contenu** :
@@ -636,7 +642,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 3.8 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées : 91 tests JUnit et 17 GameTest au vert. **Prochaine étape : 4.1**, le pack généré en mémoire. Aucun code de 4.1 n'est encore écrit.
+**État** : commits 1.1 à 4.1 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1, 2 et 3 sont terminées, ainsi que le pack généré en mémoire (4.1) : 99 tests JUnit et 19 GameTest au vert. **Prochaine étape : 4.2**, les états de blocs, modèles et définitions d'objets, écrits par de nouveaux `GeneratedResourceWriter` ajoutés à la liste de `MinecraftPlusPlus.onInitialize`.
 
 **Environnement** :
 
@@ -645,16 +651,11 @@ Questions à trancher au moment de planifier cette phase :
 - les sources de Fabric API se téléchargent depuis `maven.fabricmc.net` (artefacts `-sources.jar`) ;
 - les GameTest tournent avec la seed −7046029254386353131 (`writeGameTestSeed` dans `build.gradle`) ; leurs sets sont décrits dans `GameTestSets`.
 
-**Pistes relevées pour 4.1** :
-
-- Fabric ajoute son pack de mods par un mixin sur le constructeur de `PackRepository` (champ `sources`, voir `net.fabricmc.fabric.mixin.resource.PackRepositoryMixin` et `ModResourcePackCreator`). Il faut faire de même : ajouter un `GeneratedPackSource` (un `RepositorySource`) pour chaque `BuiltInPackSource` trouvé parmi les sources. Son champ `packType` est privé, il faudra un accesseur ;
-- `PackResources` demande `getRootResource`, `getResource(PackType, Identifier)`, `listResources`, `getNamespaces`, `getMetadataSection` et `location()` ;
-- `Pack.readMetaAndCreate(location, resourcesSupplier, packType, new PackSelectionConfig(true, Pack.Position.TOP, false))` crée un pack obligatoire et toujours actif ;
-- reste à trouver la version de format de pack de 26.1.2 pour les métadonnées.
+**Pack généré (4.1)** : un générateur rend des `GeneratedFile` (type de pack, emplacement sous `assets/` ou `data/`, texte JSON écrit par `PackJson` depuis un record). Un tag s'écrit avec `TagJson.toFile(TagKey)`. Les fichiers générés écrasent ceux des packs placés en dessous, vanilla compris. Les textures restent des fichiers statiques du jar, servis par le pack de mod de Fabric.
 
 **Points à reporter dans les commits suivants** :
 
-- 4.3 : tags `needs_stone_tool`, `needs_iron_tool`, `needs_diamond_tool`, `mineable/pickaxe`, `<nom>_repair_materials` (règle dans `core/set/TagIds`), `wolf_food`, `infiniburn_overworld` (blocs qui brûlent comme le netherrack), `beacon_payment_items`, `beacon_base_blocks` ;
+- 4.3 : tags `needs_stone_tool`, `needs_iron_tool`, `needs_diamond_tool`, `mineable/pickaxe`, `wolf_food`, `infiniburn_overworld` (blocs qui brûlent comme le netherrack), `beacon_payment_items`, `beacon_base_blocks` ;
 - 4.5 : ne pas réécrire une recette vanilla dont le résultat a des variantes (ancien `IronNuggetRecipe`) ;
-- 4.8 : remplacer `hotFloor()` dans `ContentRegistrar.registerBlocks` par le type de dégâts généré ;
+- 4.8 : remplacer `hotFloor()` dans `ContentRegistrar.registerBlocks` par le type de dégâts généré. Traduire aussi les tags d'objets générés (`tag.item.minecraftpp.<nom>_repair_materials`) : Fabric signale en développement les tags sans traduction ;
 - 4.9 : l'equipment asset de chaque matériau est `minecraftpp:<nom>` (`MaterialFactory.equipmentAsset`).
