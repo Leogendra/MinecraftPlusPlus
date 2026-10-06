@@ -157,7 +157,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 5.1 | `Feat: use the generated enchanting currency in the enchanting table` | 4 | 5 | | 1 | 10 | M | [x] |
 | 5.2 | `Feat: accept generated variants in golem and piglin interactions` | 4 | 10 | | 1 | 15 | M | [x] |
 | 6.1 | `Feat: store the Minecraft++ seed in new worlds` | 4 | 2 | | | 6 | S | [x] |
-| 6.2 | `Feat: refuse to open worlds created with another seed` | 2 | 2 | | | 4 | S | [ ] |
+| 6.2 | `Feat: refuse to open worlds created with another seed` | 2 | 2 | | | 4 | S | [x] |
 | 6.3 | `Feat: show the Minecraft++ seed status in the world list` | 2 | 2 | | | 4 | S | [ ] |
 | 7.1 | `Chore: remove the MCP workspace and bundled Mojang files` | | 1 | | 2 896 | 2 897 | XL | [ ] |
 | 7.2 | `Docs: rewrite the README for the Fabric version` | 1 | 1 | | | 2 | S | [ ] |
@@ -599,6 +599,10 @@ Tout ce que la 1.12 injectait en Java devient des fichiers JSON générés depui
 - **Contenu** : `WorldOpenFlowsMixin` bloque l'ouverture d'un monde `WRONG` ou `VANILLA` et affiche un message expliquant quoi faire, comme en 1.12.
 - **Fichiers** : C `WorldOpenFlowsMixin`, `WorldOpenGuardClientGameTest` (client) ; M `minecraftpp.client.mixins.json`, `en_us.json`.
 - **Tests** : la logique est déjà testée par `WorldSeedStatusTest` ; l'ouverture d'un monde à mauvaise seed est refusée (client).
+- **Réalisé** :
+  - `WorldOpenFlowsMixin` (client) vérifie le statut de la seed au début de `openWorld`, le point d'entrée d'un monde existant (la création d'un monde passe ailleurs). Un monde `WRONG` ou `VANILLA` n'est pas ouvert : un `AlertScreen` explique pourquoi et quoi faire, puis ramène à la liste des mondes.
+  - `WorldSeedTexts` (client) choisit les textes : seed attendue nommée quand le fichier se lit, fichier illisible, ou monde vanilla. Les textes sont dans le `en_us.json` statique.
+  - Pas de test automatique : les tests client sont exclus par D9, et la décision est portée par `WorldSeedStatus` et `MppSeedFile`, déjà testés. La méthode et le champ ciblés ont été vérifiés dans le bytecode du jar client. **À vérifier en jeu** : ouvrir un monde d'une autre seed, puis un monde vanilla.
 
 #### 6.3 `Feat: show the Minecraft++ seed status in the world list`
 - **Contenu** : `WorldListEntryMixin` ajoute « Valid Mpp Seed », « Wrong Mpp Seed » ou l'avertissement de monde vanilla dans la liste des mondes.
@@ -711,7 +715,7 @@ Questions à trancher au moment de planifier cette phase :
 
 ## 10. Point de reprise (2026-10-06)
 
-**État** : commits 1.1 à 6.1 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 5 sont terminées, ainsi que 6.1 : 131 tests JUnit et 37 GameTest au vert. **Prochaine étape : 6.2**, refus d'ouvrir un monde d'une autre seed.
+**État** : commits 1.1 à 6.2 faits sur `migration/fabric-26.1.2` (tag `v1.12-final` sur `main`). Les phases 1 à 5 sont terminées, ainsi que 6.1 et 6.2 : 131 tests JUnit et 37 GameTest au vert. **Prochaine étape : 6.3**, statut de la seed dans la liste des mondes.
 
 **Environnement** :
 
