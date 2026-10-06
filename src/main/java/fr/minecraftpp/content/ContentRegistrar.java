@@ -5,6 +5,7 @@ import java.util.function.Function;
 import fr.minecraftpp.content.block.BlockPropertiesFactory;
 import fr.minecraftpp.content.block.DynamicBlock;
 import fr.minecraftpp.content.block.DynamicOreBlock;
+import fr.minecraftpp.content.block.behaviour.BlockBehaviourModules;
 import fr.minecraftpp.core.set.ContentIds;
 import fr.minecraftpp.core.set.OreCatalog;
 import fr.minecraftpp.core.set.OreSetDefinition;
@@ -44,9 +45,12 @@ public final class ContentRegistrar
 	 */
 	private static void registerBlocks(RegisteredContent content, OreSetDefinition set)
 	{
-		registerBlockWithItem(content, ContentIds.ore(set), properties -> new DynamicOreBlock(properties, set.ore()), BlockPropertiesFactory.ore());
-		registerBlockWithItem(content, ContentIds.deepslateOre(set), properties -> new DynamicOreBlock(properties, set.ore()), BlockPropertiesFactory.deepslateOre());
-		registerBlockWithItem(content, ContentIds.storageBlock(set), properties -> new DynamicBlock(properties, set.block()), BlockPropertiesFactory.storageBlock(set.block()));
+		BlockBehaviourModules oreModules = BlockBehaviourModules.forOre(set.ore());
+		BlockBehaviourModules storageModules = BlockBehaviourModules.forStorageBlock(set.block(), level -> level.damageSources().hotFloor());
+
+		registerBlockWithItem(content, ContentIds.ore(set), properties -> new DynamicOreBlock(properties, set.ore(), oreModules), BlockPropertiesFactory.ore());
+		registerBlockWithItem(content, ContentIds.deepslateOre(set), properties -> new DynamicOreBlock(properties, set.ore(), oreModules), BlockPropertiesFactory.deepslateOre());
+		registerBlockWithItem(content, ContentIds.storageBlock(set), properties -> new DynamicBlock(properties, set.block(), storageModules), BlockPropertiesFactory.storageBlock(set.block()));
 	}
 
 	private static void registerBlockWithItem(RegisteredContent content, String path, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties)

@@ -8,7 +8,8 @@
 		"fabric-gametest": [
 			"fr.minecraftpp.gametest.ModLoadingGameTest",
 			"fr.minecraftpp.gametest.MppInfoCommandGameTest",
-			"fr.minecraftpp.gametest.BlockPlacementGameTest"
+			"fr.minecraftpp.gametest.BlockPlacementGameTest",
+			"fr.minecraftpp.gametest.BlockBehaviourGameTest"
 		]
 	},
 	"depends": {

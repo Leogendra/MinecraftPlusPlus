@@ -139,7 +139,7 @@ Fichiers touchés : C = créés, M = modifiés, R = déplacés (avec ou sans ret
 | 3.1 | `Feat: generate the ore catalog from the configured seed` | 4 | 1 | | 1 | 6 | M | [x] |
 | 3.2 | `Feat: port the mppinfo command to Brigadier` | 2 | 1 | | 1 | 4 | S | [x] |
 | 3.3 | `Feat: register ore and storage blocks` | 7 | 1 | | 5 | 13 | M | [x] |
-| 3.4 | `Feat: add falling, absorbing, damaging and powered block behaviours` | 7 | 3 | | 3 | 13 | M | [ ] |
+| 3.4 | `Feat: add falling, absorbing, damaging and powered block behaviours` | 7 | 3 | | 3 | 13 | M | [x] |
 | 3.5 | `Feat: register generated items with data components` | 4 | 1 | | 8 | 13 | M | [ ] |
 | 3.6 | `Feat: register tools and armors from generated materials` | 4 | 1 | | 16 | 21 | L | [ ] |
 | 3.7 | `Feat: list generated content in creative tabs` | 2 | 1 | | | 3 | S | [ ] |
@@ -363,6 +363,11 @@ Les blocs et objets générés sont enregistrés dans le jeu. À la fin de la ph
   - l'eau voisine est absorbée ;
   - une entité qui marche dessus prend des dégâts ;
   - signal de redstone de 15.
+- **Réalisé** :
+  - `BlockBehaviourModules` choisit les modules d'un bloc d'après ses traits et leur transmet chaque événement ;
+  - le minerai alimenté reproduit la 1.12 : des particules de redstone, envoyées par le serveur, quand on le pose, marche dessus, l'utilise ou le frappe. Il ne s'allume pas comme le minerai de redstone vanilla, ce qui demanderait un état et des modèles en plus ;
+  - opacité : seules les valeurs 1.12 inférieures à 15 laissent passer de la lumière, puisque la lumière ne dépasse jamais 15 ;
+  - les modules d'absorption et de dégâts, absents de la seed 42, sont testés seuls dans le monde de test.
 
 #### 3.5 `Feat: register generated items with data components`
 - **Contenu** :
